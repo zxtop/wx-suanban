@@ -1,0 +1,8 @@
+{
+    "usingComponents": {
+        "van-icon":"../../../static/dist/icon/index",
+        "van-popup":"../../../static/dist/popup/index",
+        "van-tab": "../../../static/dist/tab/index",
+        "van-tabs": "../../../static/dist/tabs/index"
+    }
+}
