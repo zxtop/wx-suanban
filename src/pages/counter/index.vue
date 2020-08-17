@@ -1,16 +1,25 @@
 <template>
 
-  <div class="counter-warp">
+  <div class="counter-warp" :class="{beingskin:skinBox}">
 
     <!-- 功能菜单 -->
     <div class="navcontent">
       <ul class="navList">
-        <li @click="showPopup()">
+
+        <li @click="showPopup('skin')">
           <span class="navIcon">
             <van-icon name="manager" />
           </span>
           <span class="navName">装扮</span>
         </li>
+
+        <li @click="showPopup('bag')">
+          <span class="navIcon">  
+            <van-icon name="shop" />
+          </span>
+          <span class="navName">背包</span>
+        </li>
+
       </ul>
     </div>
 
@@ -51,27 +60,20 @@
 
         <div class="chickBody">
 
-          <!-- 装扮-套装 -->
+            <!-- 装扮-套装 -->
             <div class="skinSuit" v-show="chick.currentCompId == 0">
-              <!-- <keep-alive>
-                <component :is="chick.componentSuit"></component>
-              </keep-alive> -->
-              <SuitDefault></SuitDefault>
+              
+              <SuitDefault v-if="chick.componentSuit == 'suit-default'"></SuitDefault>
+              <SuitForg v-if="chick.componentSuit == 'suit-forg'"></SuitForg>
+              <SuitSuper v-if="chick.componentSuit == 'suit-super'"></SuitSuper>
+
             </div>
 
             <!-- 装扮-帽子 -->
-            <!-- <div class="skins-hat" v-show="chick.currentCompId == 1">
-              <keep-alive>
-                <component :is="chick.componentHat"></component>
-              </keep-alive>
-            </div> -->
-
-            <!-- 装扮-衣服 -->
-            <!-- <div class="skin-cloes" v-show="chick.currentCompId == 2">
-              <keep-alive>
-                <component :is="chick.componentClothes"></component>
-              </keep-alive>
-            </div> -->
+            <div class="skinsHat" v-show="chick.currentCompId == 1">
+              <HatDefault v-if="chick.componentHat == 'hat-default'"></HatDefault>
+              <HatForg v-if="chick.componentHat == 'hat-forg'"></HatForg>
+            </div>
 
         </div>
 
@@ -85,26 +87,104 @@
 
       </div>
 
+      <!-- 弹窗遮罩层 -->
+      <div class="popupMask" v-show="skinBox" @click="hidePopup"></div>
+
     </div>
 
     <!-- 功能弹窗面板 -->
-      <div class="page-popup">
+      <div class="pagePopup">
+
         <!-- 装扮功能 -->
-        <div class="popup-item">
-          <div class="popup-head"></div>
+        <div class="popupItem" v-show="isSkin">
+
+          <div class="popupHead borderBottom1px">
+            <span class="popup-title fl">装扮</span>
+            <i>
+              <van-icon name="close" @click="hidePopup"/>
+            </i>
+          </div>
+
+          <div class="popupContent">
+
+            <van-tabs :active="tabactive" @change="onChange" v-if="isSkin">
+
+              <van-tab title="套装">
+                <ul class="opt-list">
+                  <li
+                    v-for="(suit,index) in suits"
+                    :key="index"
+                    :class="['opt-btn',{active:chick.currentSuit === suit.id}]"
+                    @click="replaceDress(0,suit.id)"
+                  >
+                    <span class="opt-mask">
+                      <i><van-icon name="checked" /></i>
+                    </span>
+
+                    {{suit.name}}
+
+                  </li>
+                </ul>
+              </van-tab>
+
+              <van-tab title="帽子" >
+                <ul class="opt-list">
+                  <li
+                    v-for="(hat,index) in hats"
+                    :key="index"
+                    :class="['opt-btn',{active:chick.currentHat === hat.id}]"
+                    @click="replaceDress(1,hat.id)"
+                  >
+                    <span class="opt-mask">
+                      <i><van-icon name="checked" /></i>
+                    </span>
+
+                    {{hat.name}}
+
+                  </li>
+                </ul>
+              </van-tab>
+
+            </van-tabs>
+
+
+            
+          </div>
+
         </div>
+
+
+        
+
+        <div class="popupItem" v-show="isBag">
+
+          <div class="popupHead borderBottom1px">
+            <span class="popup-title fl">背包</span>
+            <i>
+              <van-icon name="close" @click="hidePopup"/>
+            </i>
+          </div>
+
+          <div class="popupContent">
+
+            <van-tabs :active="tab2active" @change="onChange2" v-if="isBag">
+                <van-tab title="道具"></van-tab>
+                <van-tab title="收成"></van-tab>
+
+            </van-tabs>
+            
+          </div>
+
+        </div>
+
+
+
+
+
+
 
       </div>
   
-    <van-popup :show="show" @close="onclose"  round closeable close-icon="close" position="bottom" close-icon-position="top-right">
-
-      <van-tabs active="a" @change="onChange">
-        <van-tab title="标签1" name="a">内容1</van-tab>
-        <van-tab title="标签2" name="b">内容2</van-tab>
-        <van-tab title="标签3" name="c">内容3</van-tab>
-      </van-tabs>
-
-    </van-popup>
 
   </div>
 
@@ -125,12 +205,49 @@ import CDasuan from "@/components/CDasuan";
 import CLeaf from "@/components/CLeaf";
 import CDog from "@/components/CDog";
 
-import SuitDefault from "@/components/SuitDefault"; //套装默认组件
+import SuitDefault from "@/components/SuitDefault";  //套装默认组件
+import SuitForg from "@/components/SuitForg";        //青蛙套装
+import SuitSuper from "@/components/SuitSuper";      //超人组件
+
+
+import HatDefault from "@/components/HatDefault";  //帽子默认组件
+import HatForg from "@/components/HatForg"; //蘑菇帽子
 
 export default {
   data () {
     return {
-      show:false  
+      tabactive:0,
+      tab2active:0,
+      show:false,
+      isSkin:false,   //皮肤弹出
+      isBag:false,
+      skinBox:false, //弹出层遮罩
+      suits: [
+        // 套装列表
+        {
+          id: "default",
+          name: "默认套装"
+        },
+        {
+          id: "forg",
+          name: "青蛙套装"
+        },
+        {
+          id:'super',
+          name:"超人套装"
+        }
+      ],
+      hats: [
+        // 帽子列表
+        {
+          id: "default",
+          name: "默认帽子"
+        },
+        {
+          id: "forg",
+          name: "蘑菇帽子"
+        }
+      ]
     }
   },
   components: {
@@ -144,7 +261,11 @@ export default {
     CDasuan,
     CLeaf,
     CDog,
-    SuitDefault
+    SuitDefault,
+    SuitForg,
+    SuitSuper,
+    HatDefault,
+    HatForg
   },
   computed: {
     chick () {
@@ -152,23 +273,49 @@ export default {
     }
   },
   methods: {
-    showPopup(){
-      console.log("点击。。。。")
-      this.show = true;
+    showPopup(val){
+      // console.log("点击。。。。")
+      this.skinBox = true;
+      if(val == "skin"){
+        this.isSkin = true;
+      }
+      if(val == 'bag'){
+        this.isBag = true;
+      }
     },
-    onclose(){
-      console.log("关闭。。。。")
-      this.show = false;
+    hidePopup(){
+      console.log("关闭。。。。");
+      let _that = this;
+      this.skinBox = false;
+      setTimeout(function(){
+        _that.isSkin = false;
+        _that.isBag = false;
+
+      },400)
     },
     onChange(event){
       console.log('切换。。。。')
-    }
+    },
+    onChange2(event){
+      console.log('切换。。。。')
+    },
+    // 设置服装
+    replaceDress: function(type, pid) {
+      store.dispatch("replacedress", { type: type, pid: pid });
+      console.log(this.chick.componentSuit)
+    },
   }
 }
 </script>
 
 <style>
-
+.counter-warp{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  transition: all .6s;
+}
 .content{
   width: 100%;
   height: 100%;
@@ -344,5 +491,107 @@ export default {
   color: #fff;
   background: #8c352f;
   transform: translateX(-50%);
+}
+/* 底部边框1像素 */
+.borderBottom1px {
+  position: relative;
+}
+.borderBottom1px::after {
+  content: ' ';
+  width: 100%;
+  height: 0;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  overflow: hidden;
+  border-bottom: 1px #e7e7e7 solid;
+  transform-origin: left bottom;
+}
+.beingskin .content {
+  bottom: 50%;
+}
+.pagePopup{
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  height: 60%;
+  padding-top: 60px;
+  overflow: hidden;
+  transition: all .4s;
+  z-index: 200;
+}
+.beingskin .pagePopup{
+  top:40%;
+}
+.popupItem{
+  height: 100%;
+}
+.popupHead{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 60px;
+  width: 90%;
+  padding: 0 20px;
+  background: #fff;
+  border-radius: 30px 30px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+}
+.popupHead i {
+  font-size: 26px;
+  color: #999;
+}
+.popupContent {
+  height: 100%;
+  background: #fff;
+}
+.popupMask{
+   position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 199;
+}
+
+/* 换装选择列表 */ 
+.opt-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+.opt-list li {
+  position: relative;
+  width: 23%;
+  height: 80px;
+  margin: 1%;
+  border: 1px solid #e7e7e7;
+  border-radius: 5px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.opt-mask {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 5px;
+  background: rgba(0,0,0,.7);
+  z-index: 2;
+  line-height: 80px;
+  display: none;
+}
+.opt-mask i {
+  color: #b1e837;
+  font-size: 25.6px;
+}
+.opt-list li.active .opt-mask {
+  display: block;
 }
 </style>
