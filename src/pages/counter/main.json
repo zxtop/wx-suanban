@@ -3,6 +3,9 @@
         "van-icon":"../../../static/dist/icon/index",
         "van-popup":"../../../static/dist/popup/index",
         "van-tab": "../../../static/dist/tab/index",
-        "van-tabs": "../../../static/dist/tabs/index"
+        "van-tabs": "../../../static/dist/tabs/index",
+        "van-button":"../../../static/dist/button/index",
+        "van-dialog":"../../../static/dist/dialog/index",
+        "van-notify":"../../../static/dist/notify/index"
     }
 }

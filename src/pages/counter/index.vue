@@ -93,98 +93,180 @@
     </div>
 
     <!-- 功能弹窗面板 -->
-      <div class="pagePopup">
+    <div class="pagePopup">
 
-        <!-- 装扮功能 -->
-        <div class="popupItem" v-show="isSkin">
+      <!-- 装扮功能 -->
+      <div class="popupItem" v-show="isSkin">
 
-          <div class="popupHead borderBottom1px">
-            <span class="popup-title fl">装扮</span>
-            <i>
-              <van-icon name="close" @click="hidePopup"/>
-            </i>
-          </div>
-
-          <div class="popupContent">
-
-            <van-tabs :active="tabactive" @change="onChange" v-if="isSkin">
-
-              <van-tab title="套装">
-                <ul class="opt-list">
-                  <li
-                    v-for="(suit,index) in suits"
-                    :key="index"
-                    :class="['opt-btn',{active:chick.currentSuit === suit.id}]"
-                    @click="replaceDress(0,suit.id)"
-                  >
-                    <span class="opt-mask">
-                      <i><van-icon name="checked" /></i>
-                    </span>
-
-                    {{suit.name}}
-
-                  </li>
-                </ul>
-              </van-tab>
-
-              <van-tab title="帽子" >
-                <ul class="opt-list">
-                  <li
-                    v-for="(hat,index) in hats"
-                    :key="index"
-                    :class="['opt-btn',{active:chick.currentHat === hat.id}]"
-                    @click="replaceDress(1,hat.id)"
-                  >
-                    <span class="opt-mask">
-                      <i><van-icon name="checked" /></i>
-                    </span>
-
-                    {{hat.name}}
-
-                  </li>
-                </ul>
-              </van-tab>
-
-            </van-tabs>
-
-
-            
-          </div>
-
+        <div class="popupHead borderBottom1px">
+          <span class="popup-title fl">装扮</span>
+          <i>
+            <van-icon name="close" @click="hidePopup"/>
+          </i>
         </div>
 
+        <div class="popupContent">
 
-        
+          <van-tabs :active="tabactive" @change="onChange" v-if="isSkin">
 
-        <div class="popupItem" v-show="isBag">
+            <van-tab title="套装">
+              <ul class="opt-list">
+                <li
+                  v-for="(suit,index) in suits"
+                  :key="index"
+                  :class="['opt-btn',{active:chick.currentSuit === suit.id}]"
+                  @click="replaceDress(0,suit.id)"
+                >
+                  <span class="opt-mask">
+                    <i><van-icon name="checked" /></i>
+                  </span>
 
-          <div class="popupHead borderBottom1px">
-            <span class="popup-title fl">背包</span>
-            <i>
-              <van-icon name="close" @click="hidePopup"/>
-            </i>
-          </div>
+                  {{suit.name}}
 
-          <div class="popupContent">
+                </li>
+              </ul>
+            </van-tab>
 
-            <van-tabs :active="tab2active" @change="onChange2" v-if="isBag">
-                <van-tab title="道具"></van-tab>
-                <van-tab title="收成"></van-tab>
+            <van-tab title="帽子" >
+              <ul class="opt-list">
+                <li
+                  v-for="(hat,index) in hats"
+                  :key="index"
+                  :class="['opt-btn',{active:chick.currentHat === hat.id}]"
+                  @click="replaceDress(1,hat.id)"
+                >
+                  <span class="opt-mask">
+                    <i><van-icon name="checked" /></i>
+                  </span>
 
-            </van-tabs>
-            
-          </div>
+                  {{hat.name}}
 
+                </li>
+              </ul>
+            </van-tab>
+
+          </van-tabs>
+
+
+          
         </div>
-
-
-
-
-
-
 
       </div>
-  
+
+      <!-- 背包功能 -->
+      <div class="popupItem" v-show="isBag">
+
+        <div class="popupHead borderBottom1px">
+          <span class="popup-title fl">背包</span>
+          <i>
+            <van-icon name="close" @click="hidePopup"/>
+          </i>
+        </div>
+
+        <div class="popupContent">
+
+          <van-tabs :active="tab2active" @change="onChange2" v-if="isBag">
+              <van-tab title="道具">
+
+                <div class="food-box">
+                  <ul class="foodList">
+
+                    <li
+                      v-for="(food, index) in foods"
+                      @click="showFood(index)"
+                      :class="{isMask: food.num == 0 || food.unlock == 0}"
+                      :key="index"
+                    >
+                      <div class="foodItem">
+
+                        <div class="foodImg">
+                          <img :src="food.url" />
+                        </div>
+
+                        <p class="foodName">{{food.name}}</p>
+                        <span class="foodNum" v-if="food.num !== 0">{{food.num}}</span>
+
+                        <div
+                          class="maskBg shortageTips"
+                          @click.stop="showShop(food.name)"
+                          v-if="food.num == 0 && food.unlock == 1"
+                        >
+                          <van-button type="primary" size="small">购买</van-button>
+                        </div>
+
+                        <div
+                          class="maskBg shortageTips"
+                          v-if="food.unlock == 0"
+                          @click.stop="showUnlock(food.name)"
+                        >
+                          <van-button type="warning" size="small">解锁</van-button>
+                        </div>
+                        
+                      </div>
+
+                    </li>
+                  </ul>
+
+                </div>
+              </van-tab>
+              <van-tab title="收成"></van-tab>
+
+          </van-tabs>
+          
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- 查看食物详情 -->
+    <van-popup
+    :show="modalFood"
+    closeable
+    close-icon="close"
+    close-icon-position="top-right"
+    @close="hideFood"
+    z-index="100000"
+    customStyle="background:transparent;"
+    >
+      <div class="modal-box">
+        <div class="food-img">
+          <img :src="currFood.url" />
+        </div>
+        <div class="food-t">
+          <p>物品名称：{{currFood.name}}</p>
+          <p>拥有数量：{{currFood.num}}</p>
+          <p>过程时长：{{SecondToDate}}</p>
+          <p>获得经验：{{currFood.exp}}</p>
+          <div class="food-t-btn">
+            <van-button customStyle="background:#805c4f;color:#fff;border-color:#6b4c41;border-radius:3px;height:30px;width:100%" @click="feedClick">使用</van-button>
+          </div>
+        </div>
+      </div>
+    </van-popup>
+    <van-notify id="van-notify" />
+    <!-- 解锁商品确认 -->
+    <van-popup
+    :show="modalUnlock"
+    closeable
+    close-icon="close"
+    close-icon-position="top-right"
+    @close="hideUnlock"
+    z-index="100000"
+    customStyle="background:transparent;width:90%"
+    >
+      <div class="shopping-box">
+        <p>确定解锁吗？</p>
+        <p>解锁需要：${{currFood.unlockPrice}}</p>
+        <div class="lockBtn" style="margin-top:10px;border-top:1px solid #ceaf92;text-align:right;background:#e8dedb;padding-top:10px;padding-bottom:10px;">
+          <van-button customStyle="background:transparent;border-color:transparent" @click="hideUnlock">取消</van-button>
+          <van-button customStyle="margin-right:10px;border-radius:3px;background-color:#805c4f;border-color:#6b4c41;height:30px;color:#fff"
+            @click="commitUnlock"
+          >确定</van-button>
+        </div>
+      </div>
+    </van-popup>
 
   </div>
 
@@ -193,7 +275,6 @@
 <script>
 // Use Vuex
 import store from './store';
-
 import CSunlight from "@/components/CSunlight";
 import CPeak from "@/components/CPeak";
 import CClouds from "@/components/CClouds";
@@ -212,10 +293,12 @@ import SuitSuper from "@/components/SuitSuper";      //超人组件
 
 import HatDefault from "@/components/HatDefault";  //帽子默认组件
 import HatForg from "@/components/HatForg"; //蘑菇帽子
-
+import Notify from '@/../static/dist/notify/notify'; //@是mpvue的一个别名，指向src目录
 export default {
   data () {
     return {
+      modalFood: false, //食物弹出框
+      modalUnlock: false,//解锁
       tabactive:0,
       tab2active:0,
       show:false,
@@ -270,6 +353,17 @@ export default {
   computed: {
     chick () {
       return store.state.chick
+    },
+    //背包里的食物
+    foods() {
+      return store.state.foods;
+    },
+     //当前选中的食物
+    currFood() {
+      return store.state.currFood;
+    },
+    SecondToDate(){
+      return this.formatter(store.state.currFood.eatTime)
     }
   },
   methods: {
@@ -284,7 +378,6 @@ export default {
       }
     },
     hidePopup(){
-      console.log("关闭。。。。");
       let _that = this;
       this.skinBox = false;
       setTimeout(function(){
@@ -303,6 +396,110 @@ export default {
     replaceDress: function(type, pid) {
       store.dispatch("replacedress", { type: type, pid: pid });
       console.log(this.chick.componentSuit)
+    },
+
+    hideFood: function() {
+      this.modalFood = !this.modalFood;
+    },
+
+    showFood: function(index) {
+      this.modalFood = !this.modalFood;
+      store.state.currFood = store.state.foods[index];
+    },
+    formatter:function(value){
+      var time = value;
+      if (null != time && "" != time) {
+        if (time > 60 * 1000 && time < 60 * 60 * 1000) {
+          time =
+            parseInt(time / 1000 / 60.0) +
+            "分钟" +
+            parseInt(
+              (parseFloat(time / 1000 / 60.0) - parseInt(time / 1000 / 60.0)) *
+                60
+            ) +
+            "秒";
+        } else if (time >= 60 * 60 * 1000 && time < 60 * 60 * 24 * 1000) {
+          time =
+            parseInt(time / 1000 / 3600.0) +
+            "小时" +
+            parseInt(
+              (parseFloat(time / 1000 / 3600.0) -
+                parseInt(time / 1000 / 3600.0)) *
+                60
+            ) +
+            "分钟" +
+            parseInt(
+              (parseFloat(
+                (parseFloat(time / 1000 / 3600.0) -
+                  parseInt(time / 1000 / 3600.0)) *
+                  60
+              ) -
+                parseInt(
+                  (parseFloat(time / 1000 / 3600.0) -
+                    parseInt(time / 1000 / 3600.0)) *
+                    60
+                )) *
+                60
+            ) +
+            "秒";
+        } else if (time >= 60 * 60 * 24 * 1000) {
+          time =
+            parseInt(time / 1000 / 3600.0 / 24) +
+            "天" +
+            parseInt(
+              (parseFloat(time / 1000 / 3600.0 / 24) -
+                parseInt(time / 1000 / 3600.0 / 24)) *
+                24
+            ) +
+            "小时" +
+            parseInt(
+              (parseFloat(time / 1000 / 3600.0) -
+                parseInt(time / 1000 / 3600.0)) *
+                60
+            ) +
+            "分钟" +
+            parseInt(
+              (parseFloat(
+                (parseFloat(time / 1000 / 3600.0) -
+                  parseInt(time / 1000 / 3600.0)) *
+                  60
+              ) -
+                parseInt(
+                  (parseFloat(time / 1000 / 3600.0) -
+                    parseInt(time / 1000 / 3600.0)) *
+                    60
+                )) *
+                60
+            ) +
+            "秒";
+        } else {
+          time = Math.round((time % (1000 * 60)) / 1000) + "秒";
+        }
+      }
+      return time;
+    },
+    showUnlock: function(name) {
+      store.commit("shopFood", name);
+      this.modalUnlock = true;
+    },
+    hideUnlock: function() {
+      this.modalUnlock = false;
+    },
+    commitUnlock: function() {
+      var food = store.state.currFood.name;
+      var unlockPrice = store.state.currFood.unlockPrice;
+      console.log("解锁需要金币：" + unlockPrice);
+      if (store.state.user.money < unlockPrice) {
+        // this.error("不够金币解锁");
+        Notify({ type: 'danger', message: '不够金币解锁' });
+        this.modalUnlock = false;
+        return false;
+      } else {
+        store.dispatch("unlockfood", unlockPrice);
+        // this.success("成功解锁了" + food);
+        Notify({ type: 'success', message: '成功解锁了'+food});
+      }
+      this.hideUnlock();
     },
   }
 }
@@ -593,5 +790,111 @@ export default {
 }
 .opt-list li.active .opt-mask {
   display: block;
+}
+
+
+/* 背包列表*/
+.foodList {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 4px;
+  justify-content: center;
+}
+.foodList li {
+  width: 25%;
+  padding: 4px;
+  margin: 0 10px;
+}
+.foodItem {
+  position: relative;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+.foodImg {
+  text-align: center;
+}
+.foodImg img {
+  width: 100%;
+  height: 57.5px;
+}
+.foodImg.egg-img {
+  width: 70%;
+  margin: 0 auto 8px;
+}
+.modal-box .foodImg {
+    width: 96px;
+    margin: 0 auto;
+}
+.food-t {
+  padding: 0 16px;
+  width: 224px;
+  margin: 0 auto;
+}
+.food-t-btn {
+  margin-top: 16px;
+  text-align: center;
+}
+.food-t-btn button {
+  width: 100%;
+}
+.foodName {
+  text-align: left;
+  margin-bottom: 8px;
+  font-size: 11.2px;
+  font-weight: 600;
+}
+.foodNum {
+  position: absolute;
+  bottom: 16px;
+  right: 8px;
+  font-size: 11.2px;
+}
+.food-icon {
+  margin-right: 8px;
+}
+.shortageTips {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  flex-direction: column;
+}
+.isMask .maskBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.5); 
+  border-radius: 5px;
+}
+
+.modal-box{
+  background: #ead0b7;
+  border:5px solid #845d4f;
+  border-radius: 10px;
+  padding:16px;font-size:14px;line-height:1.5
+}
+.modal-box .food-img {
+    width: 96px;
+    margin: 0 auto;
+}
+.food-img img{
+  width: 100%;
+  height: 71px;
+}
+/* 购物 */
+.shopping-box {
+  text-align: center;
+  background: #ead0b7;
+  border:5px solid #845d4f;
+  border-radius: 10px;
+  font-size:14px;
+  line-height:1.5;
+  padding-top:10px;
+}
+.shopping-box p{
+  line-height: 30px;
 }
 </style>
