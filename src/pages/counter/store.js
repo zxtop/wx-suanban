@@ -4,6 +4,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import footList from '../../utils/stateFood';
 import achievements from '../../utils/stateAchievement';
+import subjects from '../../utils/subject';
+
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -38,6 +40,10 @@ const store = new Vuex.Store({
     achievement:achievements.achievements,
     content: '',      // 倒计时
     value: 0,  // 进度条
+    
+    subjectList: subjects.subjects, // 学习题目
+    currSubject: {},  // 当前关卡
+    currSubjectId:0,  //当前学科
   },
   mutations: {
     //设置服装
@@ -111,7 +117,7 @@ const store = new Vuex.Store({
         setTimeout(function () {
             state.content = '同学，好好学习多挣金币哦！';
         }, 2000)
-    },
+    }
   },
   actions: {
     // 设置服装

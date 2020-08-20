@@ -26,6 +26,13 @@
           </span>
           <span class="navName">勋章</span>
         </li>
+
+        <li @click="showPopup('study')" class="n-green">
+          <span class="navIcon">
+            <van-icon name="fire" />
+          </span>
+          <span class="navName">闯关</span>
+        </li>
         
       </ul>
     </div>
@@ -231,6 +238,51 @@
 
       </div>
 
+      <!-- 闯关列表 -->
+      <div class="popupItem" v-show="isStudy">
+
+        <div class="popupHead borderBottom1px">
+          <span class="popup-title fl">闯关</span>
+          <i>
+            <van-icon name="close" @click="hidePopup"/>
+          </i>
+        </div>
+
+        <div class="popupContent">
+
+          <van-tabs :active="tab3active" @change="onChange3" v-if="isStudy">
+              <van-tab
+              v-for="(subject,index1) in subjectList"
+              :key="index1"
+              :title="subject.type"
+              >
+                <ul class="subject-list">
+                  <li
+                   v-for="(item,index) in subject.list"
+                   :key="index"
+                   :class="{on:item.learning ==1,over:item.learning==2}"
+                   @click="onSubject(item,index1)"
+                  >
+                  <div class="subject-img">
+                    <div class="learning-label">
+                      <span v-if="item.learning == 0">未通关</span>
+                      <span v-if="item.learning == 1">通关中</span>
+                      <span v-if="item.learning == 2">已通关</span>
+                    </div>
+                    <img :src="item.img" alt="">
+                  </div>
+
+                  <p class="subject-name">{{item.name}}</p>
+                  </li>
+                </ul>
+
+              </van-tab>
+          </van-tabs>
+          
+        </div>
+
+      </div>
+
     </div>
 
 
@@ -297,6 +349,7 @@
       customStyle="background:transparent;width:90%"
     >
       <div class="achievementBox">
+
         <p style="margin-bottom: 10px;text-align:center">
           成就数量：
           <span>{{targetList}}</span>
@@ -333,20 +386,22 @@
 
             <div
               class="aRight"
-              v-if="item.complete && item.completeID == 0"
               @click="receiveAwards(item.title)"
+              v-if="item.complete && item.completeID == 0"
             >
-              <van-button type="primary">领取奖励</van-button>
+              <van-button type="primary" customStyle="height:30px;background-color:#805c4f;border-color:#6b4c41;color:#fff">领取奖励</van-button>
             </div>
 
             <div class="aRight" v-if="item.completeID == 1">
-              <van-button type="primary">已完成</van-button>
+              <van-button type="primary" customStyle="height:30px;background-color:#6d6d6d;border-color:#696969;color:#fff">已完成</van-button>
             </div>
 
           </li>
         </ul>
       </div>
     </van-popup>
+
+    
 
   </div>
 
@@ -377,10 +432,12 @@ import Notify from '@/../static/dist/notify/notify'; //@是mpvue的一个别名�
 export default {
   data () {
     return {
+      isStudy:false,
       modalFood: false, //食物弹出框
       modalUnlock: false,//解锁
       tabactive:0,
       tab2active:0,
+      tab3active:0,
       show:false,
       isSkin:false,   //皮肤弹出
       isBag:false,
@@ -457,6 +514,10 @@ export default {
     //解锁成就
     achievement() {
       return store.state.achievement;
+    },
+    //闯关题目
+    subjectList() {
+      return store.state.subjectList;
     }
   },
   methods: {
@@ -469,6 +530,9 @@ export default {
       if(val == 'bag'){
         this.isBag = true;
       }
+      if(val == 'study'){
+        this.isStudy = true;
+      }
     },
     hidePopup(){
       let _that = this;
@@ -476,13 +540,16 @@ export default {
       setTimeout(function(){
         _that.isSkin = false;
         _that.isBag = false;
-
+        _that.isStudy = false;
       },400)
     },
     onChange(event){
       console.log('切换。。。。')
     },
     onChange2(event){
+      console.log('切换。。。。')
+    },
+    onChange3(event){
       console.log('切换。。。。')
     },
     // 设置服装
@@ -673,9 +740,62 @@ export default {
 
     hideAchievement: function() {
       this.modalAchievement = false;
-    }
-    
+    },
 
+    //点击闯关
+    onSubject(val,index){
+      store.state.currSubject = val;    //设置当前关卡
+      store.state.currSubjectId = index;
+      if (val.learning == 0) {
+        console.log(val.name + "-未开始闯关");
+        this.startSubject(index);
+      } else if (val.learning == 2) {
+        console.log(val.name + "-已完成闯关");
+      } else {
+        console.log(val.name + "-正在闯关");
+        // const url = '../subject/main';
+        mpvue.navigateTo({ url: '../subject/main' });
+      }
+    },
+
+    startSubject(index){
+        console.log('开启激活....',index)
+        // val 是下学科的 index
+        if(index > 0){
+            Notify({ type: 'danger', message: '暂未开通该学科的闯关！敬请期待' });
+            return false;
+        }
+
+        // 当前关卡的名字
+        var name = store.state.currSubject.name;
+        // console.log('开启闯关...',name);
+
+        //当前 关卡的 Index
+        var pIndex = '';
+        store.state.subjectList[index].list.forEach((obj, id) => {
+            if (obj.name == name) {
+                pIndex = id;
+                store.state.currSubject = obj;                    
+            }
+        });
+
+        if (pIndex > 0) {
+            var prveItem = store.state.subjectList[index].list[pIndex - 1].learning;
+            if (prveItem == 2) {
+                store.state.currSubject.learning = 1;
+                Notify({ type: 'success', message: '激活关卡' });
+            } else {
+                Notify({ type: 'warning', message: '请按顺序通关' });
+                return false;
+            }
+        } else {
+            store.state.currSubject.learning = 1;
+            // Vue.prototype.$popUp('激活关卡', state.currSubject.name);
+            Notify({ type: 'success', message: '激活关卡'+store.state.currSubject.name });
+
+        }
+    }
+  
   }
 }
 </script>
@@ -841,6 +961,17 @@ export default {
   border-radius: 50%;
   background: #ffb300;
   border: 2px solid #8c3530;
+}
+.navList li.n-green {
+  background: #8BC34A;
+  border: 2px solid #639629;
+}
+.navList li.n-green .navIcon {
+  color: #f4ff85;
+  text-shadow: none;
+}
+.navList li.n-green .navName{
+  background: #64962a;
 }
 .navIcon {
   width: 100%;
@@ -1177,8 +1308,8 @@ export default {
 .aList li.onin .aInfo {
   color: #6d6d6d;
 }
-.aList li.onin .ivu-btn-primary,
-.aList li.onin .ivu-btn-primary:hover {
+.aList li.onin .van-button--primary,
+.aList li.onin .van-button--primary:hover {
     color: #fff;
     background-color: #6d6d6d;
     border-color: #696969;
@@ -1200,4 +1331,77 @@ export default {
   text-align: center;
 }
 
+
+
+/*subject*/
+.subject-list {
+  display: flex;
+  flex-wrap: wrap;
+  height: 300px;
+  overflow-y: auto;
+  /* justify-content: space-around; */
+}
+.subject-list li {
+  position: relative;
+  /* flex: 0 0 25%; */
+  padding: 5px;
+  width: 20%;
+}
+.subject-img {
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.subject-img:after {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.5);
+}
+.subject-img img{
+  display: block;
+  width: 100%;
+  border: 1px solid #b9aead;
+  box-shadow: 0 2px 0px #d2d2d2;
+  height: 100px;
+}
+.subject-name {
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 12px;
+}
+.learning-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  padding: 5px 10px;
+  border-radius: 30px;
+  background: #969696;
+  color: #fff;
+  width: 56px;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 12px;
+  z-index: 9;
+}
+.over .learning-label {
+  background: #03A9F4;
+}
+.subject-list li.on .subject-img:after{
+  display: none;
+}
+.subject-list li.on .learning-label {
+  top: 5px;
+  left: 5px;
+  transform: translate(0, 0);
+  border-radius: 3px;
+  font-size: 12px;
+  padding: 2px;
+  width: 45px;
+  background: #4CAF50;
+}
 </style>
