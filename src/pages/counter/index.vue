@@ -20,6 +20,13 @@
           <span class="navName">背包</span>
         </li>
 
+        <li @click="showAchievement()">
+          <span class="navIcon">  
+            <van-icon name="award" />
+          </span>
+          <span class="navName">勋章</span>
+        </li>
+        
       </ul>
     </div>
 
@@ -57,6 +64,15 @@
 
       <!-- 蒜瓣 -->
       <div class="chick">
+
+        <!-- 进食倒计 -->
+        <div class="countdown-box">
+          <p class="countdown-text" :class="{active : !chick.eat }">{{content}}</p>
+          <!-- 进食进度条 -->
+          <div class="progress" v-if="value != 0 && value < 100">
+            <div class="progress-content" :style="'width:' + value + '%' "></div>
+          </div>
+        </div>
 
         <div class="chickBody">
 
@@ -167,10 +183,8 @@
 
           <van-tabs :active="tab2active" @change="onChange2" v-if="isBag">
               <van-tab title="道具">
-
                 <div class="food-box">
                   <ul class="foodList">
-
                     <li
                       v-for="(food, index) in foods"
                       @click="showFood(index)"
@@ -240,12 +254,15 @@
           <p>过程时长：{{SecondToDate}}</p>
           <p>获得经验：{{currFood.exp}}</p>
           <div class="food-t-btn">
-            <van-button customStyle="background:#805c4f;color:#fff;border-color:#6b4c41;border-radius:3px;height:30px;width:100%" @click="feedClick">使用</van-button>
+            <van-button customStyle="background:#805c4f;color:#fff;border-color:#6b4c41;border-radius:3px;height:30px;width:100%" 
+            @click="feedClick">使用</van-button>
           </div>
         </div>
       </div>
     </van-popup>
+
     <van-notify id="van-notify" />
+
     <!-- 解锁商品确认 -->
     <van-popup
     :show="modalUnlock"
@@ -265,6 +282,69 @@
             @click="commitUnlock"
           >确定</van-button>
         </div>
+      </div>
+    </van-popup>
+
+
+    <!-- 勋章列表 -->
+    <van-popup
+      :show="modalAchievement"
+      closeable
+      close-icon="close"
+      close-icon-position="top-right"
+      @close="hideAchievement"
+      z-index="100000"
+      customStyle="background:transparent;width:90%"
+    >
+      <div class="achievementBox">
+        <p style="margin-bottom: 10px;text-align:center">
+          成就数量：
+          <span>{{targetList}}</span>
+          /{{achievement.length}}
+        </p>
+
+        <ul class="aList">
+          <li
+            v-for="(item, index) in achievement"
+            :class="{ active: item.complete, onin: item.completeID == 1 }"
+            :key="index"
+          >
+
+            <div class="aInfo">
+              <p>
+                {{item.title}}
+                <span class="fr">{{item.completeCurrCount}}/{{item.completeNeedCount}}</span>
+              </p>
+
+              <div>
+                {{item.desc}}
+                <div class="reward" v-if="item.completeID == 0">
+
+                  <div class="reward-icon">
+                    <van-icon name="gold-coin-o" />
+                  </div>
+
+                  <span class="reward-profit">{{item.profit}}</span>
+
+                </div>
+              </div>
+
+            </div>
+
+            <div
+              class="aRight"
+              v-if="item.complete && item.completeID == 0"
+              @click="receiveAwards(item.title)"
+            >
+              <van-button type="primary">领取奖励</van-button>
+            </div>
+
+            <div class="aRight" v-if="item.completeID == 1">
+              <van-button type="primary">已完成</van-button>
+            </div>
+
+          </li>
+        </ul>
       </div>
     </van-popup>
 
@@ -330,7 +410,8 @@ export default {
           id: "forg",
           name: "蘑菇帽子"
         }
-      ]
+      ],
+      modalAchievement:false
     }
   },
   components: {
@@ -364,6 +445,18 @@ export default {
     },
     SecondToDate(){
       return this.formatter(store.state.currFood.eatTime)
+    },
+    //倒计时
+    content() {
+      return store.state.content;
+    },
+    //进食进度条
+    value() {
+      return store.state.value;
+    },
+    //解锁成就
+    achievement() {
+      return store.state.achievement;
     }
   },
   methods: {
@@ -491,7 +584,7 @@ export default {
       console.log("解锁需要金币：" + unlockPrice);
       if (store.state.user.money < unlockPrice) {
         // this.error("不够金币解锁");
-        Notify({ type: 'danger', message: '不够金币解锁' });
+        Notify({ type: 'warning', message: '不够金币解锁' });
         this.modalUnlock = false;
         return false;
       } else {
@@ -501,6 +594,88 @@ export default {
       }
       this.hideUnlock();
     },
+
+    feedClick(){
+      //判断是否进食
+      if(store.state.chick.eat){
+        Notify({ type: 'primary', message: '正在进食，请勿打扰'});
+        return;
+      }else if(store.state.currFood.num > 0){
+        let startDate = new Date().getTime();
+        let endDate = startDate + store.state.currFood.eatTime;
+        store.commit('FEED_CLICK', endDate);
+        this.countdown(startDate);
+      }else{
+        Notify({ type: 'warning', message: '你没有'+store.state.currFood.name+'食物了'});
+      }
+      this.hideFood();
+      this.hidePopup();
+      Notify({ type: 'success', message: '喂食成功' });
+    },
+
+    //倒计时
+    countdown(startdate) {
+      let self = this;
+      let es = store.state.endDate - startdate;
+      let delay = (100 / store.state.currFood.eatTime) * 1000; // 计算每秒走的进度
+
+      console.log("计算每秒走的进度:" + delay + "%");
+
+      if (es > 0) {
+        let timer = setInterval(function() {
+          let nowTime = new Date().getTime();
+          let t = store.state.endDate - nowTime;
+          let value = ((store.state.currFood.eatTime - t) / 1000) * delay; //计算进度条
+
+          console.log("计算进度条:" + value + "%");
+
+          if (value <= 100) {
+            store.state.value = value;
+          } else {
+            store.state.value = 100;
+          }
+
+          console.log("t:" + t + "进度条：" + value + "%");
+
+          if (t > 0) {
+            store.state.chick.eat = true;
+            let day = Math.floor(t / 86400000);
+            let hour = Math.floor((t / 3600000) % 24);
+            let min = Math.floor((t / 60000) % 60);
+            let sec = Math.floor((t / 1000) % 60);
+            hour = hour < 10 ? "0" + hour : hour;
+            min = min < 10 ? "0" + min : min;
+            sec = sec < 10 ? "0" + sec : sec;
+            let format = "";
+            if (day > 0) {
+              format = `${day}天${hour}小时${min}分${sec}秒`;
+            }
+            if (day <= 0 && hour > 0) {
+              format = `${hour}小时${min}分${sec}秒`;
+            }
+            if (day <= 0 && hour <= 0) {
+              format = `${min}分${sec}秒`;
+            }
+            store.state.content = format; // 显示倒计时
+            // console.log('存档')
+            // store.dispatch("savegame");
+          } else {
+            clearInterval(timer); // 清除定时器
+            store.dispatch("endeat"); // 喂食结束
+          }
+        }, 1000);
+      }
+    },
+
+    showAchievement: function() {
+      this.modalAchievement = true;
+    },
+
+    hideAchievement: function() {
+      this.modalAchievement = false;
+    }
+    
+
   }
 }
 </script>
@@ -897,4 +1072,132 @@ export default {
 .shopping-box p{
   line-height: 30px;
 }
+.achievementBox{
+  background: #ead0b7;
+  border:5px solid #845d4f;
+  border-radius: 10px;
+  font-size:14px;
+  line-height:1.5;
+  padding-top:10px;
+}
+
+/* 进食 */
+/* 倒计时组件 */
+.countdown-box {
+	position: absolute;
+	top: 48px;
+  width: 130%;
+  text-align: center;
+  z-index: 99;
+  left: 72px;
+}
+.countdown-text {
+  position: relative;
+    display: inline-block;
+    padding: 10px;
+    background: #F90;
+    border-radius: 15px;
+    color: #fff;
+}
+.countdown-text:before {
+  position: absolute;
+  bottom: -9px;
+  left: 16px;
+  content: "";
+  width: 0;
+  height: 0;
+  border-top: 10px solid #ff9901;
+  border-right: 10px solid transparent;
+  display: none;
+}
+.countdown-text.active {
+  margin-top: 15px;
+}
+.countdown-text.active:before {
+  display: block;
+}
+
+.progress {
+    width: 100%;
+    height: 4px;
+    border-radius: 5px;
+    margin-top: 10px;
+    background-color: #d1b8ff;
+    z-index: 1;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 5px #d1d2d1;
+}
+.progress .progress-content {
+    width: 0%;
+    height: 100%;
+    background-color: #673AB7;
+}
+
+
+.fr {
+  float: right;
+}
+.aList {
+  height: 58vh;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 15px;
+}
+.aList::-webkit-scrollbar {display: none;}
+.aList li {
+    display: flex;
+    padding: 8px;
+    border: 2px solid #9a9590;
+    border-radius: 8px;
+    background: #dad9d8;
+}
+.aList li + li {
+  margin-top: 8px;
+}
+.aInfo {
+  flex: 1;
+  color: #666;
+}
+.aRight {
+  flex: 0 0 auto;
+  padding-left: 8px;
+}
+.aList li.active {
+    border: 2px solid #835d4f;
+    background: #ecc096;
+}
+.aList li.active .aInfo {
+  color: #8e6150;
+}
+.aList li.onin{
+    background: #989898;
+    border: 2px solid #827d79;
+}
+.aList li.onin .aInfo {
+  color: #6d6d6d;
+}
+.aList li.onin .ivu-btn-primary,
+.aList li.onin .ivu-btn-primary:hover {
+    color: #fff;
+    background-color: #6d6d6d;
+    border-color: #696969;
+}
+.reward {
+    float: right;
+    width: 64px;
+    display: flex;
+    align-items: center;
+    height: 20px;
+    padding: 0 1.6px;
+    background: #f1cf6a;
+    border: 1px solid #e2bb47;
+    color: #d28003;
+    border-radius: 4px;
+}
+.no-data {
+  padding-top: 50px;
+  text-align: center;
+}
+
 </style>
