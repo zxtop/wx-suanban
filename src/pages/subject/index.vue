@@ -1,88 +1,100 @@
 <template>
 
     <div class="subject-wrap">
-        
         <!-- 背景图片随机加载 -->
         <CBg></CBg>
 
-        <div class="questionform">
+        <div class="questionform" v-if="!fail && !success"> 
             <div class="title_bg">
                 <img :src="dt_img" alt="">
                 <span>{{question_index}}/10</span>
             </div>
-        </div>
 
-        <div class="question_pro_ifo">
-            <div class="question_proess">
-                <div class="proess_out">
-                    <van-progress :percentage="proess_in" color="#59db08" stroke-width="10px" show-pivot="false" class="vanpro" />
-                </div>
-            </div>
-        </div>
-
-
-        <!-- 加载题目 -->
-        <div class="text-main2">
-            <div class="main2_content" style="height:500px;overflow-y:auto">
-
-                <div class="showQuestion">
-                    <div class="question_content" style="font-size:14px" v-html="questionForm.content"></div>
-                    <div class="questio_option">
-                        <p style="font-size:14px;" v-html="questionForm.option"></p>
+            <div class="question_pro_ifo">
+                <div class="question_proess">
+                    <div class="proess_out">
+                        <van-progress :percentage="proess_in" color="#59db08" stroke-width="10px" show-pivot="false" class="vanpro" />
                     </div>
                 </div>
-
-                <!-- 判断题 -->
-                <div class="select_judge" v-if="questionForm.type && questionForm.type.name =='判断题'">
-                    <ul ref="btn_out1" id="btn_out1">
-                        
-                        <li class="btn" 
-                        v-for="(item,index) in yes_no_option"
-                        :key="index"
-                        >
-                            <div class="loading-dock">
-                                <button class="submit" @click="handleBtmClick(item)" v-bind:disabled="item.isactive" :class="{wrong:item.close,correct:item.checkmark}">
-                                    <span><van-icon name="success" v-if="item.checkmark"/></span>
-                                    <span><van-icon name="cross"  v-if="item.close"/></span>
-                                    {{item.text}}
-                                </button>
-                            </div>                        
-                        </li>
-
-                    </ul>
-                </div>
-
-                <!-- 不是判断题 -->
-                <div
-                    class="select_option"
-                    v-if="questionForm.type && questionForm.type.name != '判断题'"
-                >
-                    <ul ref="btn_out2" id="btn_out2">
-                        <li class="btn"
-                         v-for="(item,index) in choice_option"
-                         :key="index"
-                        >
-                            <div class="loading-dock">
-                                <button class="submit" @click="handleBtmClick(item)" v-bind:disabled="item.isactive" :class="{wrong:item.close,correct:item.checkmark}">
-                                    <span><van-icon name="success" v-if="item.checkmark"/></span>
-                                    <span><van-icon name="cross"  v-if="item.close"/></span>
-                                    {{item.text}}
-                                </button>
-                            </div>
-                        </li>
-                    </ul>
-
-                </div>
-
             </div>
+
+            <!-- 加载题目 -->
+            <div class="text-main2">
+                <div class="main2_content" style="height:500px;overflow-y:auto">
+
+                    <div class="showQuestion">
+                        <div class="question_content" style="font-size:14px" v-html="questionForm.content"></div>
+                        <div class="questio_option">
+                            <p style="font-size:14px;" v-html="questionForm.option"></p>
+                        </div>
+                    </div>
+
+                    <!-- 判断题 -->
+                    <div class="select_judge" v-if="questionForm.type && questionForm.type.name =='判断题'">
+                        <ul ref="btn_out1" id="btn_out1">
+                            <li class="btn" 
+                            v-for="(item,index) in yes_no_option"
+                            :key="index"
+                            >
+                                <div class="loading-dock">
+                                    <button class="submit" @click="handleBtmClick(item)" v-bind:disabled="item.isactive" :class="{wrong:item.close,correct:item.checkmark}">
+                                        <span><van-icon name="success" v-if="item.checkmark"/></span>
+                                        <span><van-icon name="cross"  v-if="item.close"/></span>
+                                        {{item.text}}
+                                    </button>
+                                </div>                        
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <!-- 不是判断题 -->
+                    <div
+                        class="select_option"
+                        v-if="questionForm.type && questionForm.type.name != '判断题'"
+                    >
+                        <ul ref="btn_out2" id="btn_out2">
+                            <li class="btn"
+                            v-for="(item,index) in choice_option"
+                            :key="index"
+                            >
+                                <div class="loading-dock">
+                                    <button class="submit" @click="handleBtmClick(item)" v-bind:disabled="item.isactive" :class="{wrong:item.close,correct:item.checkmark}">
+                                        <span><van-icon name="success" v-if="item.checkmark"/></span>
+                                        <span><van-icon name="cross"  v-if="item.close"/></span>
+                                        {{item.text}}
+                                    </button>
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                </div>
+            </div>
+
         </div>
 
+
+        <div class="result_fail" v-if="fail">            
+            <c-ghost @outResetQuestionList="beginQuestionClick"></c-ghost>
+        </div>
+
+        <div class="result_success" v-if="success">
+            <c-box @outResetQuestionList="beginQuestionClick" @outQuestionList="hideSubject"></c-box>
+        </div>
+
+        <van-notify id="van-notify" />
     </div>
 
 </template>
 <script>
 import CBg from "@/components/CBg";
 import store from "../../store/index";
+import Notify from '@/../static/dist/notify/notify'; //@是mpvue的一个别名，指向src目录
+import CGhost from "@/components/CGhost";
+import CBox from "@/components/CBox";
+
 export default{
     data () {
         return {
@@ -119,10 +131,16 @@ export default{
             ],
             checkmark: false,      // 对号的图标  默认不显示
             close: false,          // 查号的图标  默认不显示
+            u_level: 0,
+            fail: false,    //挑战失败
+            success: true,   //挑战成功
+
         }
     },
     components: {
-        CBg
+        CBg,
+        CGhost,
+        CBox
     },
     created () {
 
@@ -170,17 +188,62 @@ export default{
         })
     },
     methods: {
+        beginQuestionClick(){
+            this.fail = false;
+            this.success = false;
+            this.u_yes_num = 0;
+
+            this.params.term_id = store.state.user.termId;
+            this.params.difficulty = store.state.currSubject.difficulty;
+            console.log('当前题目租的params.....',this.params);
+            this.uid = store.state.user.uid;
+            this.u_gold_count = store.state.user.money;
+
+            this.$httpWX.post({
+                url: '/api/v1/teacher-questions/error/query',
+                data: this.params
+            }).then(res => {
+                this.questionslist = [];
+                console.log(res,"试题加载完毕。。。。。。。")
+                res.data.map((item,index)=>{
+                    if(item.content){
+                        item.content = item.content.replace(new RegExp('http://daincy.iok.la:81','g'),'https://api.tk.ejex.net');
+                    }
+                    if(item.option){
+                        item.option = item.option.replace(new RegExp('http://daincy.iok.la:81','g'),'https://api.tk.ejex.net');
+                    }
+                    if(item.answer[0]){
+                        if(item.answer[0].indexOf('对')>-1 ||item.answer[0].indexOf('错')>-1){
+                            item.type = {
+                                name:'判断题'
+                            }
+                        }else{
+                            item.type = {
+                                name:'单选题'
+                            }
+                        }
+                    }
+                });
+                this.questionslist = res.data;
+                this.showQuestion();
+            })
+        },
         showQuestion(){
             this.questionForm = this.questionslist[0];
             this.question_index = 0;
         },
         handleBtmClick(data){
             // console.log(data,"点击选项");
-            if(data.text == this.questionForm.answer){
+            if(data.text == this.questionForm.answer){ //回答正确
                 data.checkmark = true;
+                this.u_yes_num += 1;
+                this.updataUserData();  //更新用户成绩
+                this.addUserQuestion(this.uid,this.questionForm._id,true) //记录正确答案
             }else{
-                data.close = true;
+                data.close = true; //回答错误
+                this.addUserQuestion(this.uid,this.questionForm._id,false) //记录错误答案
             }
+
             this.yes_no_option.forEach(function(obj){
                 obj.isactive = true;
             });
@@ -188,7 +251,101 @@ export default{
                 obj.isactive = true;
             })
             
+            //切换下一题
+            this.nextQuestion();
+        },
+        updataUserData(){
+             if (this.u_yes_num == 10) {
+                this.u_level += 1;
+            }
+
+            this.u_gold_count += 10;
+            var studentInfo = {
+                studentId: this.uid,
+                level: this.u_level,
+                goldCount: this.u_gold_count
+            };
+
+            store.commit("SET_GOLD",studentInfo)
+
+            this.$httpWX.post_a({
+                url: '/api/systemconfig/student/update_student_levelgold',
+                data: studentInfo
+            }).then(res => {
+                console.log(res,"更新等级和金币")
+            })
+
+            // 存入store显示
+            // this.$store.commit("SAVE_GAME")
+        },
+
+        addUserQuestion(uid, _id, type){ //记录答案信息
+            if(type){
+                this.$httpWX.post_a({
+                    url:'/api/systemconfig/student/add_student_point_yes?userId='+uid+'&titleId='+_id
+                }).then(res => {
+                    console.log('回答正确...',res);
+                })
+            }else{
+                //添加到错题
+                var StudentPointNo = {
+                    studentId: uid,
+                    titleId: _id,
+                    subjectId: this.questionForm.subject?this.questionForm.subject.id:'',
+                    typeId: this.questionForm.type?this.questionForm.type.id:'',
+                    difficulty: this.questionForm.difficulty,
+                    versionId: 0,
+                    termId: this.questionForm.term?this.questionForm.term.id:''
+                };
+               
+                this.$httpWX.post_a({
+                    url:'/api/systemconfig/student/add_student_point_no',
+                    data:StudentPointNo
+                }).then(res => {
+                    console.log('回答错误...',res);
+                })
+            }
+        },
+
+        //切换下一个题目
+        nextQuestion() {
+            let _that = this;
+            Notify({ type: 'primary', message: '下一题' ,onClose:function(){
+                _that.yes_no_option.forEach(function(obj){
+                    obj.isactive = false;
+                    obj.checkmark = false;
+                    obj.close = false;
+                });
+                _that.choice_option.forEach(function(obj){
+                    obj.isactive = false;
+                    obj.checkmark = false;
+                    obj.close = false;
+                });
+                _that.question_index += 1;
+                if (_that.question_index == 10) {
+                    _that.showResult();
+                } else {
+                    _that.questionForm = _that.questionslist[_that.question_index];
+                }
+            }});
+        },
+
+        //做完10道题的结果
+        showResult(){
+            this.questionslist = null;
+            this.question_index = 0;
+            console.log('最终结果是：'+ this.u_yes_num)
+            if (this.u_yes_num == 10) {
+                console.log("全部答对");
+                this.success = true;
+                //激活下一关
+                this.$store.dispatch("activenewleve", this.$store.state.currSubjectId);
+            } else {
+                console.log("继续加油");
+                this.fail = true;
+            }
         }
+
     }
 }
 </script>

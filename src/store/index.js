@@ -21,6 +21,7 @@ const store = new Vuex.Store({
     },
 
     chick:{
+      level: 1,            // 等级
       eat: false,          // 是否在进食
       currentSuit: '',     // 当前套装
       currentHat: '',      // 当前帽子
@@ -46,6 +47,7 @@ const store = new Vuex.Store({
     currSubjectId:0,  //当前学科
   },
   mutations: {
+
     //设置服装
     REPLACE_DRESS(state, price) {
         state.chick.currentCompId = price.type;
@@ -117,7 +119,13 @@ const store = new Vuex.Store({
         setTimeout(function () {
             state.content = '同学，好好学习多挣金币哦！';
         }, 2000)
-    }
+    },
+
+    //每道题金币更新
+    SET_GOLD(state,val){
+        state.user.money = val.goldCount;
+        state.chick.level = val.level;
+    },
   },
   actions: {
     // 设置服装

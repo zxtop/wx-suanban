@@ -1,6 +1,8 @@
 {
     "usingComponents": {
       "van-progress":"../../../static/dist/progress/index",
-      "van-icon":"../../../static/dist/icon/index"
+      "van-icon":"../../../static/dist/icon/index",
+      "van-notify":"../../../static/dist/notify/index",
+      "van-button": "../../../static/dist/button/index"
     }
   }
