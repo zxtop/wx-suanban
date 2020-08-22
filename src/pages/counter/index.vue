@@ -409,7 +409,7 @@
 
 <script>
 // Use Vuex
-import store from './store';
+import store from '../../store/index';
 import CSunlight from "@/components/CSunlight";
 import CPeak from "@/components/CPeak";
 import CClouds from "@/components/CClouds";
@@ -765,7 +765,6 @@ export default {
             Notify({ type: 'danger', message: '暂未开通该学科的闯关！敬请期待' });
             return false;
         }
-
         // 当前关卡的名字
         var name = store.state.currSubject.name;
         // console.log('开启闯关...',name);
