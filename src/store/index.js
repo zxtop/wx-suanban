@@ -37,6 +37,7 @@ const store = new Vuex.Store({
 
     foods:footList.foodList,
     currFood: {},     // 当前选中的食物
+    currGood: {},     // 当前收获的物品
     endDate: '',      // 结束时间
     achievement:achievements.achievements,
     content: '',      // 倒计时
@@ -46,8 +47,31 @@ const store = new Vuex.Store({
     currSubject: {},  // 当前关卡
     currSubjectId:0,  //当前学科
     goods: [],// 物品，收获物品
+    
   },
   mutations: {
+    SELL_GOOD(state, num) {
+        state.user.money += state.currGood.price * num;
+        state.currGood.num = state.currGood.num - num;
+        console.log(state.user.money);
+        console.log(state.currGood.num);
+        if (state.currGood.num == 0) {
+            // 出售完后删除
+            state.goods.forEach((obj, index) => {
+                if (obj.name === state.currGood.name) {
+                    state.goods.splice(state.goods.indexOf(index), 1);
+                }
+            });
+        }
+    },
+    SHOW_GOOD(state, name) {
+        // 得到查看的物品
+        state.goods.forEach(obj => {
+            if (obj.name === name) {
+                state.currGood = obj
+            }
+        });
+    },
     //获取收成
     GET_GOOD(state,val){
         if(state.goods.length){
@@ -143,6 +167,15 @@ const store = new Vuex.Store({
     },
   },
   actions: {
+     // 出售物品
+     sellgood(context, value) {
+        context.commit('SELL_GOOD', value);
+        // context.commit('SAVE_GAME');
+    },
+    // 查看物品详情
+    shopGood(context, value) {
+        context.commit('SHOW_GOOD', value);
+    },
     // 设置服装
     replacedress(context, value) {
         context.commit("REPLACE_DRESS", value);

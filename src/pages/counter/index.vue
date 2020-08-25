@@ -1,7 +1,32 @@
 <template>
 
   <div class="counter-warp" :class="{beingskin:skinBox}">
+    
+    <!-- 游戏名称 -->
+    <div class="game-title">蒜瓣闯关</div>
+    
+    <!-- 用户资料 -->
+    <div class="user-box">
 
+      <div class="user-logo">
+        <div class="user-level">{{chick.level}}</div>
+        <span class="portrait-item portrait0"></span>
+      </div>
+
+      <div class="user-info">
+        <div class="user-name">{{user.name}}</div>
+        <div class="user-money">
+          <div class="user-mi">
+            <!-- <Icon type="logo-usd" /> -->
+            <van-icon name="gold-coin-o" />
+          </div>
+          <p>{{user.money}}</p>
+        </div>
+      </div>
+
+    </div>
+
+    
     <!-- 功能菜单 -->
     <div class="navcontent">
       <ul class="navList">
@@ -35,6 +60,17 @@
         </li>
         
       </ul>
+
+      <!-- 游戏帮助 -->
+      <ul class="navHelp">
+        <li @click="showHelp()">
+          <span class="navIcon">
+            <van-icon name="question" />
+          </span>
+          <span class="navName">帮助</span>
+        </li>
+      </ul>
+
     </div>
 
     <div class="content">
@@ -230,7 +266,30 @@
 
                 </div>
               </van-tab>
-              <van-tab title="收成"></van-tab>
+
+              <van-tab title="收成">
+
+                <div class="food-box">
+                  <ul class="foodList">
+                    <li
+                      v-for="(good, index) in goods"
+                      v-show="good.num != 0"
+                      @click="showGood(good.name)"
+                      :key="index"
+                    >
+                      <div class="foodItem">
+                        <div class="foodImg egg-img">
+                          <img :src="good.url" />
+                        </div>
+                        <p class="foodName">{{good.name}}</p>
+                        <span class="foodNum">{{good.num}}</span>
+                      </div>
+                    </li>
+                  </ul>
+                  <div class="no-data" v-show="goods.length == 0">暂无物品</div>
+                </div>
+
+              </van-tab>
 
           </van-tabs>
           
@@ -285,6 +344,61 @@
 
     </div>
 
+    <!-- 查看收成 -->
+    <van-popup
+    :show="modalGood"
+    closeable
+    close-icon="close"
+    close-icon-position="top-right"
+    @close="hideGood"
+    z-index="100000"
+    customStyle="background:transparent;"
+    >
+      <div class="modal-box" v-if="!goodDetails">
+        <div class="food-t">
+          <p>物品名称：{{currGood.name}}</p>
+          <p>拥有数量：{{currGood.num}}</p>
+          <p>出售价值：${{currGood.price}}</p>
+
+          <div class="food-t-btn">
+            <van-button customStyle="background:#805c4f;color:#fff;border-color:#6b4c41;border-radius:3px;height:30px;width:100%" 
+            @click="setSell">出售</van-button>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="shopping-box shoppingout" v-if="goodDetails">
+        <div class="shoppGood">
+          <p>{{currGood.name}}</p>
+          <div class="num-form">
+
+            <div class="shop-btn" @click="sellReduce">
+              <span>-</span>
+            </div>
+
+            <div class="shop-input">
+              <b>{{sellNum}}</b>
+            </div>
+
+            <div class="shop-btn" @click="sellAdd">
+              <van-icon name="add" />
+            </div>
+
+          </div>
+
+          <p>出售总价：${{currGood.price * sellNum}}</p>
+          <van-button customStyle="background:#805c4f;color:#fff;border-color:#6b4c41;border-radius:3px;height:30px;width:100%" 
+          @click="commitSell">出售</van-button>
+
+        </div>
+
+      </div>
+
+
+
+    </van-popup>
 
     <!-- 查看食物详情 -->
     <van-popup
@@ -313,7 +427,6 @@
       </div>
     </van-popup>
 
-    <van-notify id="van-notify" />
 
     <!-- 解锁商品确认 -->
     <van-popup
@@ -401,6 +514,35 @@
       </div>
     </van-popup>
 
+
+    <!-- 帮助弹框 -->
+    <van-popup
+      :show="modalHelp"
+      closeable
+      close-icon="close"
+      close-icon-position="top-right"
+      @close="hideHelp"
+      z-index="100000"
+      customStyle="background:transparent;width:90%"
+    >
+      <div class="achievementBox">
+
+        <p style="margin-bottom: 10px; padding:10px">
+          【游戏介绍】
+          <br />蒜瓣闯关是针对中小学的刷题学习平台；游戏设计多种模式，首先可以通过闯关直接获取金币奖励，
+          闯关完成后还会随机奖励各种道具，通过道具可以加快小蒜苗的生长，来提升等级。小蒜苗可以收获大蒜，
+          大蒜同样可以兑换成金币，金币还可以购买各种道具，商城开放收可以在商城购买学习用品。
+          <br />
+          <br />【游戏操作】
+          <br />首先点击人物头像，来设置年级学习，然后点击闯关，开始选择科目闯关，首先会从简单的开始，在未通关前不可以进行下一关，每关10道题目，全部答对才能通关，通关后会奖励宝箱，点击宝箱会随机掉落道具；关卡越难，奖励越丰厚；
+        </p>
+
+      </div>
+    </van-popup>
+
+
+
+    <van-notify id="van-notify" />
     
 
   </div>
@@ -468,7 +610,11 @@ export default {
           name: "蘑菇帽子"
         }
       ],
-      modalAchievement:false
+      modalAchievement:false,
+      modalGood:false, //收成弹出
+      goodDetails: false,
+      sellNum: 1,       //物品出售默认值
+      modalHelp:false
     }
   },
   components: {
@@ -489,6 +635,10 @@ export default {
     HatForg
   },
   computed: {
+    //用户
+    user() {
+      return store.state.user;
+    },
     chick () {
       return store.state.chick
     },
@@ -496,9 +646,17 @@ export default {
     foods() {
       return store.state.foods;
     },
+    //收成
+    goods() {
+      return store.state.goods;
+    },
      //当前选中的食物
     currFood() {
       return store.state.currFood;
+    },
+    //当前收获的物品
+    currGood() {
+      return store.state.currGood;
     },
     SecondToDate(){
       return this.formatter(store.state.currFood.eatTime)
@@ -565,6 +723,14 @@ export default {
     showFood: function(index) {
       this.modalFood = !this.modalFood;
       store.state.currFood = store.state.foods[index];
+    },
+
+    showGood: function(name) {
+      store.dispatch("shopGood", name);
+      this.modalGood = true;
+    },
+    hideGood: function() {
+      this.modalGood = false;
     },
     formatter:function(value){
       var time = value;
@@ -793,8 +959,46 @@ export default {
             Notify({ type: 'success', message: '激活关卡'+store.state.currSubject.name });
 
         }
-    }
+    },
+
+    setSell: function() {
+      this.goodDetails = !this.goodDetails;
+    },
+
+    sellAdd: function() {
+      if (this.sellNum == store.state.currGood.num) {
+        Notify({ type: 'danger', message: '不能再加了' });
+        return;
+      } else {
+        this.sellNum++;
+      }
+    },
+
+    sellReduce: function() {
+      if (this.sellNum == 1) {
+        Notify({ type: 'danger', message: '不能再减了' });
+        return;
+      } else {
+        this.sellNum--;
+      }
+    },
+
+    commitSell: function() {
+      this.goodDetails = !this.goodDetails;
+      Notify({ type: 'success', message: "出售了" +  store.state.currGood.num +"个" +store.state.currGood.name });
+      store.dispatch("sellgood", this.sellNum);
+      this.modalGood = false;
+    },
   
+
+    showHelp: function() {
+      this.modalHelp = true;
+    },
+
+    hideHelp: function() {
+      this.modalHelp = false;
+    },
+
   }
 }
 </script>
@@ -855,27 +1059,11 @@ export default {
   display: block;
   width: 90%;
   height: 87%;
-  /* background-color: #f2e3cb; */
-  /* background: url(../images/st.png); */
     -moz-background-size: 100% 100%;
     background-size: 100% 100%;
     background-repeat: no-repeat;
   z-index: 5;
-/*  -webkit-animation:chickbody 1.5s ease-in infinite;
-  animation:chickbody 1.5s ease-in infinite;*/
   overflow: hidden;
-}
-.chickBody:before{
-  /*position: absolute;
-  top: 0;
-  left: -.05rem;
-  width: 7.6rem;
-  height: 8.2rem;
-  background-image:-webkit-linear-gradient(-180deg, #fff, #fff, #f9e5e6); 
-  background-image: linear-gradient(-180deg, #fff, #fff, #f9e5e6);
-  border-radius: 66% 66% 66% 66% / 80% 80% 50% 50%;
-  -webkit-animation:chickbody-before 1.5s ease-in infinite;
-  animation:chickbody-before 1.5s ease-in infinite;*/
 }
 
 .eye span:before,
@@ -1103,7 +1291,6 @@ export default {
   display: flex;
   flex-wrap: wrap;
   padding: 4px;
-  justify-content: center;
 }
 .foodList li {
   width: 25%;
@@ -1202,6 +1389,10 @@ export default {
 .shopping-box p{
   line-height: 30px;
 }
+.shoppGood{
+  width: 100%;
+}
+
 .achievementBox{
   background: #ead0b7;
   border:5px solid #845d4f;
@@ -1345,6 +1536,7 @@ export default {
   /* flex: 0 0 25%; */
   padding: 5px;
   width: 20%;
+  margin-left:8px;
 }
 .subject-img {
   position: relative;
@@ -1402,5 +1594,138 @@ export default {
   padding: 2px;
   width: 45px;
   background: #4CAF50;
+}
+.num-form {
+  width: 128px;
+  display: flex;
+  margin: 8px auto;
+}
+.shop-btn {
+  flex: 0 0 50px;
+  text-align: center;
+  width: 32px;
+  height: 32px;
+  font-size: 25.6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.shop-input {
+  margin: 0 6.4px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #fff;
+  line-height: 30px;
+}
+.shoppingout{
+  padding-left: 65px;
+  padding-right: 65px;
+  padding-bottom: 40px;
+}
+
+/* 帮助按钮 */
+.navHelp {
+  position: absolute;
+  bottom: 1px;
+  right: 15px;
+  z-index: 21;
+}
+.navHelp li {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  margin-bottom: 15px;
+  border-radius: 50%;
+  background: #f7f14c;
+  border: 2px solid #f5bd6a;
+}
+.navHelp li .navIcon {
+  color: #fb5b32;
+  text-shadow: none;
+}
+.navHelp .navName{
+  background: #fb5b32;
+}
+
+
+/*   游戏标题  */
+.game-title{
+	position: fixed;
+	position: absolute;
+	top: 16px;
+	left:16px; 
+	z-index: 30;
+	color: #ffffff;
+	font-size:24px;
+	text-shadow: 1px 1px 2px #515a6e;
+}
+
+/* user 用户*/
+.user-box {
+  /* position: fixed; */
+  position: relative;
+  width: 12%;
+  top: 56px;
+  left: 16px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  padding: 4px 12px 4px 4px;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 48px;
+  padding-left: 50px;
+}
+
+
+
+.user-logo {
+  margin-right: 4px;
+  border-radius: 50%;
+  text-align: center;
+  color: #ffbb38;
+  background: #8c3530;
+  border: 2px solid #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  position: absolute;
+  left: 0;
+}
+.user-logo .portrait-item {
+  border: none; 
+  box-shadow: none;
+  width: 40px;
+  height: 40px;
+}
+.user-level {
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  color: #fff;
+  background: #8c352f;
+  font-size: 10.4px;
+  padding: 0 6px;
+  border-radius: 5px;
+  border: 1px solid #fbddb1;
+  transform: translateX(-50%);
+}
+.user-money {
+    display: flex;
+    color: #ffb304;
+    font-size: 11.2px;
+    padding-top: 3.2px;
+}
+.user-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #8c3530;
+}
+.user-mi {
+  line-height: 1;
+  color: #F90;
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: -1px;
 }
 </style>
