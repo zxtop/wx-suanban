@@ -85,6 +85,7 @@
         </div>
 
         <van-notify id="van-notify" />
+
     </div>
 
 </template>
@@ -133,7 +134,7 @@ export default{
             close: false,          // 查号的图标  默认不显示
             u_level: 0,
             fail: false,    //挑战失败
-            success: true,   //挑战成功
+            success: false,   //挑战成功
 
         }
     },
@@ -152,6 +153,7 @@ export default{
       }
     },
     mounted () {
+        let _that = this;
         this.params.term_id = store.state.user.termId;
         this.params.difficulty = store.state.currSubject.difficulty;
         console.log('当前题目租的params.....',this.params);
@@ -165,6 +167,8 @@ export default{
             this.questionslist = [];
             console.log(res,"试题加载完毕。。。。。。。")
             res.data.map((item,index)=>{
+                // console.log(item.content)
+                item.content = _that.imgTagAddStyle(item.content);
                 if(item.content){
                     item.content = item.content.replace(new RegExp('http://daincy.iok.la:81','g'),'https://api.tk.ejex.net');
                 }
@@ -189,6 +193,7 @@ export default{
     },
     methods: {
         beginQuestionClick(){
+            let _that = this;
             this.fail = false;
             this.success = false;
             this.u_yes_num = 0;
@@ -205,7 +210,10 @@ export default{
             }).then(res => {
                 this.questionslist = [];
                 console.log(res,"试题加载完毕。。。。。。。")
+
                 res.data.map((item,index)=>{
+                    item.content = _that.imgTagAddStyle(item.content);
+
                     if(item.content){
                         item.content = item.content.replace(new RegExp('http://daincy.iok.la:81','g'),'https://api.tk.ejex.net');
                     }
@@ -339,11 +347,57 @@ export default{
                 console.log("全部答对");
                 this.success = true;
                 //激活下一关
-                this.$store.dispatch("activenewleve", this.$store.state.currSubjectId);
+                // this.$store.dispatch("activenewleve", this.$store.state.currSubjectId);
+                this.activenewleve();
             } else {
                 console.log("继续加油");
                 this.fail = true;
             }
+        },
+
+        //激活下一关
+        activenewleve(){
+            // 当前关卡的名字
+            var name = store.state.currSubject.name;
+            // 设置当前关卡为已通过
+            if(store.state.currSubject.learning ===1){
+                store.state.currSubject.learning = 2;
+                //当前 关卡的 Index
+                var pIndex = ''
+                store.state.subjectList[store.state.currSubjectId].list.forEach((obj, index) => {
+                    if (obj.name == name) {
+                        pIndex = index;                  
+                    }
+                });
+                if(pIndex<store.state.subjectList[store.state.currSubjectId].list.length -1){
+                    // console.log("比较。。。。。");
+                    store.state.currSubject = store.state.subjectList[store.state.currSubjectId].list[pIndex + 1];
+                    store.state.currSubject.learning = 1;
+                    // Vue.prototype.$popUp('激活关卡', state.currSubject.name);
+                    // Notify({ type: 'success', message: '激活关卡'+ store.state.currSubject.name });
+                }else{
+                    console.log('最后一题。。。。')
+                    return
+                }
+            }    
+        },
+
+        imgTagAddStyle (htmlstr) {
+            // 正则匹配所有img标签
+            // var regex0 = new RegExp("(i?)(\<img)([^\>]+\>)","gmi");
+            // 正则匹配不含style="" 或 style='' 的img标签
+            // eslint-disable-next-line no-useless-escape
+            var regex1 = new RegExp("(i?)(\<img)(?!(.*?style=['\"](.*)['\"])[^\>]+\>)", 'gmi')
+            // 给不含style="" 或 style='' 的img标签加上style=""
+            htmlstr = htmlstr.replace(regex1, '$2 style=""$3')
+            // console.log('增加style=""后的html字符串：' + htmlstr)
+            // 正则匹配含有style的img标签
+            // eslint-disable-next-line no-useless-escape
+            var regex2 = new RegExp("(i?)(\<img.*?style=['\"])([^\>]+\>)", 'gmi')
+            // 在img标签的style里面增加css样式(这里增加的样式：display:block;max-width:100%;height:auto;border:5px solid red;)
+            htmlstr = htmlstr.replace(regex2, '$2max-width:100%;height:auto;$3')
+            // console.log('在img标签的style里面增加样式后的html字符串：' + htmlstr)
+            return htmlstr
         }
 
     }

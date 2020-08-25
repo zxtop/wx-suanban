@@ -45,9 +45,24 @@ const store = new Vuex.Store({
     subjectList: subjects.subjects, // 学习题目
     currSubject: {},  // 当前关卡
     currSubjectId:0,  //当前学科
+    goods: [],// 物品，收获物品
   },
   mutations: {
-
+    //获取收成
+    GET_GOOD(state,val){
+        if(state.goods.length){
+            if(state.goods.indexOf(val)!==-1){ //包含
+                state.goods[state.goods.indexOf(val)].num++
+            }else{
+                val.num = 1;
+                state.goods.push(val);
+            }
+        }else{
+            val.num = 1;
+            state.goods.push(val);
+        }
+        // console.log('获取收成。。。',state.goods)
+    },
     //设置服装
     REPLACE_DRESS(state, price) {
         state.chick.currentCompId = price.type;
