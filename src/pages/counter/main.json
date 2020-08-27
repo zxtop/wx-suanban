@@ -8,6 +8,8 @@
         "van-dialog":"../../../static/dist/dialog/index",
         "van-notify":"../../../static/dist/notify/index",
         "van-row": "../../../static/dist/row/index",
-        "van-col": "../../../static/dist/col/index"
+        "van-col": "../../../static/dist/col/index",
+        "van-field": "../../../static/dist/field/index",
+        "van-picker": "../../../static/dist/picker/index"
     }
 }

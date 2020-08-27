@@ -293,7 +293,7 @@
               </van-tab>
 
           </van-tabs>
-          
+
         </div>
 
       </div>
@@ -558,7 +558,7 @@
           <!-- 年级选择按钮 -->
           <div class="user-grade">
             <span class="click_grade" @click="showGrade">
-              <img src="../../assets/images/grade_btn.png" alt="">
+              <img src="../../assets/images/grade_btn.png" alt="" style="width:93px;height:39px">
             </span>
           </div>
           
@@ -572,7 +572,7 @@
             {{user.name}}
             <van-icon name="edit" @click="editUser"/>
           </div>
-          
+
           <div class="user-zl">
             <van-row>
               <van-col span="12">
@@ -619,15 +619,27 @@
             </form>
           </div>
         </div>
+      </div>
 
+    </van-popup>
+
+    <!-- 年级选择 -->
+    <van-popup
+     :show="modalGrade"
+     z-index="10000000"
+     customStyle="background:transparent;width:90%"
+    >
+      <div class="gradeOut">
+        <p style="text-align:center;margin-bottom:20px">年级|学期</p>
+        <UserGrade v-model="modalGrade"></UserGrade>
       </div>
 
     </van-popup>
 
 
+
     <van-notify id="van-notify" />
     
-
   </div>
 
 </template>
@@ -654,6 +666,8 @@ import SuitSuper from "@/components/SuitSuper";      //超人组件
 import HatDefault from "@/components/HatDefault";  //帽子默认组件
 import HatForg from "@/components/HatForg"; //蘑菇帽子
 import Notify from '@/../static/dist/notify/notify'; //@是mpvue的一个别名，指向src目录
+
+import UserGrade from '@/components/UGrade';
 export default {
   data () {
     return {
@@ -694,13 +708,14 @@ export default {
         }
       ],
       modalAchievement:false,
-      modalGood:false, //收成弹出
+      modalGood:false,  //收成弹出
       goodDetails: false,
       sellNum: 1,       //物品出售默认值
       modalHelp:false,
       modalUser:false,
       editUserName: false,
       newUserName: "",
+      modalGrade:false,
     }
   },
   components: {
@@ -718,7 +733,8 @@ export default {
     SuitForg,
     SuitSuper,
     HatDefault,
-    HatForg
+    HatForg,
+    UserGrade
   },
   computed: {
     //用户
@@ -765,10 +781,16 @@ export default {
     }
   },
   methods: {
+
+    showGrade(){
+      this.modalGrade = true;
+    },
+
     // 打开用户信息面板
     showUser: function() {
       this.modalUser = true;
     },
+
     hideUser:function(){
       this.editUserName = false;
       this.modalUser = false;
@@ -1486,6 +1508,16 @@ export default {
 .food-img img{
   width: 100%;
   height: 71px;
+}
+
+.gradeOut{
+    text-align: center;
+    background: #ead0b7;
+    border:5px solid #845d4f;
+    border-radius: 10px;
+    font-size:14px;
+    line-height:1.5;
+    padding-top:10px;
 }
 /* 购物 */
 .shopping-box {
