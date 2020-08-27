@@ -6,18 +6,19 @@
     <div class="game-title">蒜瓣闯关</div>
     
     <!-- 用户资料 -->
-    <div class="user-box">
-
+    <div class="user-box" @click="showUser">
+      
       <div class="user-logo">
         <div class="user-level">{{chick.level}}</div>
-        <span class="portrait-item portrait0"></span>
+        <span class="portrait-item portrait0" >
+          <img src="../../assets/images/portrait0.jpg" style="width:41px;height:38px"/>
+        </span>
       </div>
 
       <div class="user-info">
         <div class="user-name">{{user.name}}</div>
         <div class="user-money">
           <div class="user-mi">
-            <!-- <Icon type="logo-usd" /> -->
             <van-icon name="gold-coin-o" />
           </div>
           <p>{{user.money}}</p>
@@ -540,6 +541,88 @@
       </div>
     </van-popup>
 
+    <!-- 用户信息 -->
+    <van-popup
+      :show="modalUser"
+      closeable
+      close-icon="close"
+      close-icon-position="top-right"
+      @close="hideUser"
+      z-index="100000"
+      customStyle="background:transparent;width:90%"
+    >
+
+      <div class="userout">
+        <div class="user-form" v-if="!editUserName">
+
+          <!-- 年级选择按钮 -->
+          <div class="user-grade">
+            <span class="click_grade" @click="showGrade">
+              <img src="../../assets/images/grade_btn.png" alt="">
+            </span>
+          </div>
+          
+          <div class="head-portrait">
+            <span class="portrait-item portrait0">
+              <img src="../../assets/images/portrait0.jpg" alt="" style="width:80px;height:81px">
+            </span>
+          </div>
+
+          <div class="user-name">
+            {{user.name}}
+            <van-icon name="edit" @click="editUser"/>
+          </div>
+          
+          <div class="user-zl">
+            <van-row>
+              <van-col span="12">
+                <div class="uz-i">
+                  <van-icon name="gem" color="#8bca43"/>
+                </div>
+                <div class="uz-i">等级：{{chick.level}}</div>
+              </van-col>
+
+              <van-col span="12">
+                <div class="uz-i">
+                  <van-icon name="like" color="#F44336"/>
+                  <div class="uz-i">粉丝：0</div>
+                </div>
+              </van-col>
+
+            </van-row>
+
+            <van-row>
+              <van-col span="12">
+                <div class="uz-i">
+                  <van-icon name="card" color="#40aaff"/>
+                </div>
+                <div class="uz-i">积分：0</div>
+              </van-col>
+              <van-col span="12">
+                <div class="uz-i">
+                  <van-icon name="medal" color="#FF9800"/>
+                </div>
+                <div class="uz-i">段位：0</div>
+              </van-col>
+            </van-row>
+
+          </div>  
+
+        </div>
+
+        <div class="user-form" v-if="editUserName">
+          <div class="useredit">
+            <form :model="user">
+              <p class="pl-title">修改用户名需要1000金币</p>
+              <input type="text" v-model="newUserName" placeholder="设置用户名称..." style="background-color:#fff;margin-top:20px;margin-bottom:20px;padding-top:5px;padding-bottom:5px">
+              <van-button type="default" size="small" custom-style="background-color:#805c4f;border-color:#6b4c41;color:#fff" @click="saveUser">保存</van-button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+    </van-popup>
 
 
     <van-notify id="van-notify" />
@@ -614,7 +697,10 @@ export default {
       modalGood:false, //收成弹出
       goodDetails: false,
       sellNum: 1,       //物品出售默认值
-      modalHelp:false
+      modalHelp:false,
+      modalUser:false,
+      editUserName: false,
+      newUserName: "",
     }
   },
   components: {
@@ -679,6 +765,14 @@ export default {
     }
   },
   methods: {
+    // 打开用户信息面板
+    showUser: function() {
+      this.modalUser = true;
+    },
+    hideUser:function(){
+      this.editUserName = false;
+      this.modalUser = false;
+    },
     showPopup(val){
       // console.log("点击。。。。")
       this.skinBox = true;
@@ -997,6 +1091,23 @@ export default {
 
     hideHelp: function() {
       this.modalHelp = false;
+    },
+
+    editUser: function() {
+      this.editUserName = !this.editUserName;
+    },
+    saveUser: function() {
+      if (this.newUserName == "") {
+        // console.log("请输入用户名称");
+        Notify({ type: 'warning', message: '请输入用户名称' });
+        return false;
+      } else {
+        Notify({ type: 'success', message: '修改成功' });
+        this.editUserName = !this.editUserName;
+        store.dispatch("setusername", this.newUserName);
+        
+        //this.$store.dispatch('savegame');
+      }
     },
 
   }
@@ -1659,6 +1770,20 @@ export default {
 	font-size:24px;
 	text-shadow: 1px 1px 2px #515a6e;
 }
+.useredit{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.userout{
+  text-align: center;
+  background: #ead0b7;
+  border:5px solid #845d4f;
+  border-radius: 10px;
+  font-size:14px;
+  line-height:1.5;
+  padding-top:10px;
+  padding-bottom: 10px;
+}
 
 /* user 用户*/
 .user-box {
@@ -1676,8 +1801,6 @@ export default {
   padding-left: 50px;
 }
 
-
-
 .user-logo {
   margin-right: 4px;
   border-radius: 50%;
@@ -1691,6 +1814,7 @@ export default {
   font-size: 32px;
   position: absolute;
   left: 0;
+  overflow: hidden;
 }
 .user-logo .portrait-item {
   border: none; 
@@ -1714,10 +1838,10 @@ export default {
     display: flex;
     color: #ffb304;
     font-size: 11.2px;
-    padding-top: 3.2px;
+    padding-top: -0.8px
 }
 .user-name {
-  font-size: 12px;
+  font-size: 9px;
   font-weight: 600;
   color: #8c3530;
 }
@@ -1726,6 +1850,71 @@ export default {
   color: #F90;
   display: inline-block;
   vertical-align: middle;
-  margin-top: -1px;
+  margin-top: 2.5px;
 }
+
+.uz-i {
+  /* padding: 5px;
+  display: inline-block;
+  color: #865d20;
+  vertical-align: top; */
+  /* float: left; */
+  display: inline-block;
+  margin-left: 4px;
+  padding-bottom: 5px;
+}
+.user-form {
+  width: 80%;
+  margin: 0 auto;
+}
+.user-form button {
+  display: block;
+  margin: 0 auto;
+}
+.user-form .user-name {
+  text-align: center;
+  font-size: 16px;
+}
+.user-form .user-name i {
+  color: #926625;
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: -3px;
+  margin-left: 7px;
+}
+.user-form 
+.user-zl {
+  width: 80%;
+  margin: 15px auto 0;
+}
+
+.user-grade .click_grade{
+  display: block;
+  width: 93px;
+  height: 39px;
+  overflow: hidden;
+  position: absolute;
+  left: 6px;
+  top:7px;
+}
+
+/* 头像 */
+.head-portrait {
+  padding: 15px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.portrait-item {
+  display: block;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #f7e1cb;
+  box-shadow: 0 0 3px #7d4f3e;
+  /* background: url(../images/portrait0.jpg) no-repeat;
+  background-size: 100% 100%; */
+}
+
 </style>

@@ -6,6 +6,8 @@
         "van-tabs": "../../../static/dist/tabs/index",
         "van-button":"../../../static/dist/button/index",
         "van-dialog":"../../../static/dist/dialog/index",
-        "van-notify":"../../../static/dist/notify/index"
+        "van-notify":"../../../static/dist/notify/index",
+        "van-row": "../../../static/dist/row/index",
+        "van-col": "../../../static/dist/col/index"
     }
 }

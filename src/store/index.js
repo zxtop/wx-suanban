@@ -50,6 +50,11 @@ const store = new Vuex.Store({
     
   },
   mutations: {
+    // 设置新用户名称
+    SET_USER_NAME(state, val) {
+        state.user.name = val;
+        state.user.money -= 1000;
+    },
     SELL_GOOD(state, num) {
         state.user.money += state.currGood.price * num;
         state.currGood.num = state.currGood.num - num;
@@ -167,6 +172,11 @@ const store = new Vuex.Store({
     },
   },
   actions: {
+    // 设置新的用户名
+    setusername(context, value) {
+        context.commit('SET_USER_NAME', value);
+        // context.commit('SAVE_GAME');
+    },
      // 出售物品
      sellgood(context, value) {
         context.commit('SELL_GOOD', value);
