@@ -6,6 +6,9 @@ import footList from '../utils/stateFood';
 import achievements from '../utils/stateAchievement';
 import subjects from '../utils/subject';
 
+
+import WXrequest from '../utils/wx-request'
+
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -47,9 +50,68 @@ const store = new Vuex.Store({
     currSubject: {},  // 当前关卡
     currSubjectId:0,  //当前学科
     goods: [],// 物品，收获物品
-    
+    token: null,
+    currId:0,  //当前用户id
+    currNickName:'' //当前用户昵称
   },
   mutations: {
+    //更改uid
+    SAVE_UID:(state,uid)=>{
+        state.user.uid = uid;
+        console.log("uid......",state.user.uid)
+    },
+    //登录后设置用户id和name
+    LOGIN_ID_NAME(state,val){
+        state.currId = val.id;
+        state.currNickName = val.nickName;
+    },
+    SET_TOKEN: (state, token) => {
+        state.token = token;
+    },
+    //存档
+    SAVE_GAME(state){
+        let achievement = state.achievement.map(obj => {
+            return {
+              id: obj.id,
+              count: obj.completeCurrCount,
+              complete: obj.complete,
+              completeID: obj.completeID
+            }
+          });
+        let data = {
+            achievement,
+            endDate: state.endDate,
+            currFood: state.currFood,
+            currGood: state.currGood,
+            currSubject: state.currSubject,
+            currSubjectId:state.currSubjectId,
+            chick: state.chick,
+            user: state.user,
+            foods: state.foods,
+            goods: state.goods,
+            subjectList: state.subjectList,
+            token:state.token
+        };
+        wx.setStorageSync('farmDate', JSON.stringify(data));
+        
+        //更新用户等级和金币数
+        let user_data={
+            userId:data.user.uid,
+            level:data.chick.level,
+            goldCount:data.user.money
+        }
+        
+        WXrequest.post_a({
+            url:'/api/systemconfig/student/update_student_levelgold',
+            data:user_data
+        }).then(res => {
+            if(res.result == 'success'){
+                console.log('更改了用户名，，，，成功更新等级和金币数');
+            }else{
+                console.log('更新等级和金币数失败');
+            }
+        })
+    },
     // 设置新用户名称
     SET_USER_NAME(state, val) {
         state.user.name = val;
@@ -172,6 +234,28 @@ const store = new Vuex.Store({
     },
   },
   actions: {
+    
+    saveuserId(context,value){
+        context.commit('SAVE_UID',value)
+        context.commit('SAVE_GAME');
+    },
+    //用户第一次登录使用账号 登录成功后报错token  
+    Login(context,userInfo){
+        return new Promise((resolve,reject)=>{
+            WXrequest.post_a({
+                url:'/api/user/login',
+                data:userInfo
+            }).then(res => {
+                if(res.result == 'success'){
+                    context.commit('SET_TOKEN',res.token)
+                }
+                resolve(res)
+            }).catch(error=>{
+                console.log(error);
+                reject(error);
+            })
+        })
+    },
     // 设置新的用户名
     setusername(context, value) {
         context.commit('SET_USER_NAME', value);

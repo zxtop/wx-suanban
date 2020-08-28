@@ -10,6 +10,7 @@
         "van-row": "../../../static/dist/row/index",
         "van-col": "../../../static/dist/col/index",
         "van-field": "../../../static/dist/field/index",
-        "van-picker": "../../../static/dist/picker/index"
+        "van-picker": "../../../static/dist/picker/index",
+        "van-toast": "../../../static/dist/toast/index"
     }
 }

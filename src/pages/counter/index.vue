@@ -27,7 +27,6 @@
 
     </div>
 
-    
     <!-- 功能菜单 -->
     <div class="navcontent">
       <ul class="navList">
@@ -369,7 +368,6 @@
         </div>
       </div>
 
-
       <div class="shopping-box shoppingout" v-if="goodDetails">
         <div class="shoppGood">
           <p>{{currGood.name}}</p>
@@ -396,8 +394,6 @@
         </div>
 
       </div>
-
-
 
     </van-popup>
 
@@ -637,6 +633,17 @@
     </van-popup>
 
 
+    <!-- 用户登录 -->
+    <van-popup
+    :show="modalLogin"
+    z-index="10000000"
+    customStyle="background:transparent;width:90%"
+    >
+    <div class="loginout">
+      <User v-model="modalLogin" @getVisitor="hideLogin"></User>
+    </div>
+    </van-popup>
+
 
     <van-notify id="van-notify" />
     
@@ -668,9 +675,12 @@ import HatForg from "@/components/HatForg"; //蘑菇帽子
 import Notify from '@/../static/dist/notify/notify'; //@是mpvue的一个别名，指向src目录
 
 import UserGrade from '@/components/UGrade';
+
+import User from '@/components/user' //用户登录
 export default {
   data () {
     return {
+      modalLogin:true, //用户登录开关
       isStudy:false,
       modalFood: false, //食物弹出框
       modalUnlock: false,//解锁
@@ -734,7 +744,13 @@ export default {
     SuitSuper,
     HatDefault,
     HatForg,
-    UserGrade
+    UserGrade,
+    User
+  },
+  created () {
+    //本地存档
+    store.commit("SAVE_GAME");
+
   },
   computed: {
     //用户
@@ -781,7 +797,11 @@ export default {
     }
   },
   methods: {
-
+    hideLogin(){
+      console.log('游客登录')
+      this.modalLogin = false; 
+      this.modalVistor = true;
+    },
     showGrade(){
       this.modalGrade = true;
     },
@@ -1512,6 +1532,15 @@ export default {
 
 .gradeOut{
     text-align: center;
+    background: #ead0b7;
+    border:5px solid #845d4f;
+    border-radius: 10px;
+    font-size:14px;
+    line-height:1.5;
+    padding-top:10px;
+}
+.loginout{
+  text-align: center;
     background: #ead0b7;
     border:5px solid #845d4f;
     border-radius: 10px;
