@@ -99,47 +99,48 @@ import stateGradeSemester from '@/utils/stateGradeSemester';
             },
             handleSubmit () {
                 //提交成功后提交用户信息
-                // let obj = {
-                //     currId:store.state.currId,
-                //     currNickName:store.state.currNickName,
-                //     gradeId:this.selectedIndex,
-                //     termId:this.termIndex
-                // }
+                let obj = {
+                    currId:store.state.currId,
+                    currNickName:store.state.currNickName,
+                    gradeId:this.selectedIndex,
+                    termId:this.termIndex
+                }
 
-                // let objId = {
-                //     userId:store.state.currId,
-                //     gradeId:this.selectedIndex,
-                //     termId:this.termIndex
-                // }
+                let objId = {
+                    userId:store.state.currId,
+                    gradeId:this.selectedIndex,
+                    termId:this.termIndex
+                }
                 
+                this.$httpWX.post_a({
+                    url:'/api/systemconfig/student/update_student_info',
+                    data:objId
+                }).then(res => {
+                    if(res.result == 'true'){
+                        this.$httpWX.post_a({
+                            url:'/api/systemconfig/student/student_info?userId='+store.state.currId
+                        }).then(res=>{
+                            console.log(res,'dddddd');
+                            let studentInfo = {
+                                studentId: store.state.currId,
+                                level: res.student.level,
+                                goldCount: res.student.gold_count
+                            };
+                            store.commit("SET_GOLD",studentInfo);
+                            store.dispatch('setusergrade',obj);
+                        })
+                    }else{
+                        //游客登录
+                        let studentInfo = {
+                            studentId: store.state.currId,
+                            level: 1,
+                            goldCount: 3000
+                        };
+                        store.commit("SET_GOLD",studentInfo);
+                        store.dispatch('setusergrade',obj);
+                    }
+                })
 
-                // //更改用户信息
-                // SetUserGradeTemId(objId)
-                // .then(response=>{
-                //     console.log(response.data)
-                //     if(response.data.result == 'true'){
-                //         getUserLevel(store.state.currId).then(res => {
-                //             console.log(res,'dddddd');
-                //             let studentInfo = {
-                //                 studentId: store.state.currId,
-                //                 level: res.data.student.level,
-                //                 goldCount: res.data.student.gold_count
-                //             };
-                //             store.commit("SET_GOLD",studentInfo);
-                //             store.dispatch('setusergrade',obj);
-                //         });
-                        
-                //     }else{
-                //         //游客登录
-                //         let studentInfo = {
-                //             studentId: store.state.currId,
-                //             level: 1,
-                //             goldCount: 3000
-                //         };
-                //         store.commit("SET_GOLD",studentInfo);
-                //         store.dispatch('setusergrade',obj);
-                //     }
-                // });
 
                 //提交后返回主页面
                 this.$emit('input',false)

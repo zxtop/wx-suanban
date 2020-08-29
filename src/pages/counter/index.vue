@@ -107,6 +107,9 @@
 
       <!-- 蒜瓣 -->
       <div class="chick">
+        <div class="chick-swiper">
+            <span>{{randomText}}</span>
+          </div>
 
         <!-- 进食倒计 -->
         <div class="countdown-box">
@@ -680,6 +683,7 @@ import User from '@/components/user' //用户登录
 export default {
   data () {
     return {
+      modalVistor:false,
       modalLogin:true, //用户登录开关
       isStudy:false,
       modalFood: false, //食物弹出框
@@ -726,6 +730,13 @@ export default {
       editUserName: false,
       newUserName: "",
       modalGrade:false,
+      swiperContent:[
+        {text:'我是小蒜头，欢迎来闯关'},
+        {text:'通过闯关可以升级等级和金币哦'},
+        {text:'可以点击装扮选择喜欢的服饰哦'},
+        {text:'啦啦啦啦，去闯关吧，看看你有多棒！'},
+      ],
+      randomText:''
     }
   },
   components: {
@@ -750,7 +761,18 @@ export default {
   created () {
     //本地存档
     store.commit("SAVE_GAME");
-
+  },
+   watch: {
+    // 监听用户登录 年级学期和游客登录切换监控
+    modalLogin(newname,oldname){
+      // console.log(newname,oldname)
+      if(oldname && !this.modalVistor){
+        this.modalGrade = true;
+      }
+      if(oldname && this.modalVistor){
+        this.modalGrade = false;
+      }
+    }
   },
   computed: {
     //用户
@@ -797,6 +819,18 @@ export default {
     }
   },
   methods: {
+    //文字随机
+    goText(){
+      let index = 0;
+      let timer = setInterval(()=>{
+        if(index == this.swiperContent.length-1){
+          index = 0;
+        }else{
+          index++;
+        }
+        this.randomText = this.swiperContent[index].text
+      },2000)
+    },
     hideLogin(){
       console.log('游客登录')
       this.modalLogin = false; 
@@ -1152,6 +1186,10 @@ export default {
       }
     },
 
+  },
+  mounted () {
+    this.goText(); //文字随机播放
+    
   }
 }
 </script>
@@ -1977,5 +2015,12 @@ export default {
   /* background: url(../images/portrait0.jpg) no-repeat;
   background-size: 100% 100%; */
 }
-
+.chick-swiper{background: rgb(250, 222, 61,0.8);padding: 5px;border-radius: 10px;z-index: 9;
+  text-align: center;border: 2px solid #ff8800;
+  /* opacity: 1; */
+  width: 100%;
+  top: 30px;
+  animation: textPopUp 1s linear;
+}
+.chick-swiper span{color: #000;font-size: 12px;text-align: center;}
 </style>

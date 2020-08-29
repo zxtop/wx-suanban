@@ -1,4 +1,5 @@
 <script>
+import store from "./store/index"
 export default {
   created () {
     // 调用API从本地缓存中获取数据
@@ -26,6 +27,30 @@ export default {
   },
   log () {
     console.log(`log at:${Date.now()}`)
+  },
+  onHide(){
+    // console.log("进入后台。。。。");
+    //  wx.removeStorage({
+    //   key: 'farmDate',
+    //   success: function(res) {
+    //     console.log("清除缓存")
+    //   }
+    //  })
+  },
+  onShow(){
+    // console.log("进入前台。。。。");
+    // store.state.user={
+    //   uid: 0,             //用户ID
+    //   gradeId:0,          //用户年级ID
+    //   termId: 0,          //用户年级学期ID
+    //   firstGame: 0, 
+    //   name: '闯关小英雄',
+    //   money: 3000,    
+    //   achievementNum: 0, // 获得成就总数
+    // }
+    // //本地存档
+    // store.commit("SAVE_GAME");
+
   }
 }
 </script>

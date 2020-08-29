@@ -247,7 +247,7 @@ export default {
   opacity: 0;
 }
 .container-user .show-in{
-  animation: go_in 0.5s;
+  animation: go_in 0.2s;
   opacity: 1;
   visibility: visible;
 }

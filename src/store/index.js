@@ -232,11 +232,22 @@ const store = new Vuex.Store({
         state.user.money = val.goldCount;
         state.chick.level = val.level;
     },
+    //用户年级学期设置
+    SET_USER_GRADE_TERM(state,val){
+        state.user.uid = val.currId;
+        state.user.name = val.currNickName;
+        state.user.gradeId = val.gradeId;
+        state.user.termId = val.termId;
+    },
   },
   actions: {
-    
+    //设置用户年级和学期、用户id、用户名称
+    setusergrade(context,value){
+        context.commit('SET_USER_GRADE_TERM',value);
+        context.commit('SAVE_GAME');
+    },
     saveuserId(context,value){
-        context.commit('SAVE_UID',value)
+        context.commit('SAVE_UID',value);
         context.commit('SAVE_GAME');
     },
     //用户第一次登录使用账号 登录成功后报错token  
@@ -259,12 +270,12 @@ const store = new Vuex.Store({
     // 设置新的用户名
     setusername(context, value) {
         context.commit('SET_USER_NAME', value);
-        // context.commit('SAVE_GAME');
+        context.commit('SAVE_GAME');
     },
      // 出售物品
      sellgood(context, value) {
         context.commit('SELL_GOOD', value);
-        // context.commit('SAVE_GAME');
+        context.commit('SAVE_GAME');
     },
     // 查看物品详情
     shopGood(context, value) {
@@ -273,12 +284,12 @@ const store = new Vuex.Store({
     // 设置服装
     replacedress(context, value) {
         context.commit("REPLACE_DRESS", value);
-        // context.commit('SAVE_GAME');
+        context.commit('SAVE_GAME');
     },
     // 解锁商品
     unlockfood(context, value) {
         context.commit("UNLOCK_FOOD", value);
-        // context.commit('SAVE_GAME');
+        context.commit('SAVE_GAME');
     },
     endeat(context) {
         context.commit('END_EAT');
