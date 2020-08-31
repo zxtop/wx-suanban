@@ -104,8 +104,11 @@
             </div>
 
         </div>
+
         <van-toast id="van-toast" />
+
     </div>
+    
 </template>
 
 <script>

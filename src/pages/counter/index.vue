@@ -108,8 +108,8 @@
       <!-- 蒜瓣 -->
       <div class="chick">
         <div class="chick-swiper">
-            <span>{{randomText}}</span>
-          </div>
+          <span>{{randomText}}</span>
+        </div>
 
         <!-- 进食倒计 -->
         <div class="countdown-box">
@@ -451,6 +451,46 @@
     </van-popup>
 
 
+    <!-- 购买物品 -->
+    <van-popup
+    :show="modalShop"
+    closeable
+    close-icon="close"
+    close-icon-position="top-right"
+    @close="hideShop"
+    z-index="100000"
+    customStyle="background:transparent;width:90%"
+    >
+      <div class="shopping-box">
+        <p>{{currFood.name}}</p>
+        <p>单价：${{currFood.price}}/个</p>
+        <div class="num-form">
+          <div class="shop-btn" @click="shopReduce">
+            <span>-</span>
+          </div>
+          <div class="shop-input">
+            <!-- <i-input type="text" v-model="shoppingNum" placeholder="数量"></i-input> -->
+            <b>{{shoppingNum}}</b>
+          </div>
+          <div class="shop-btn" @click="shopAdd">
+            <van-icon name="add" />
+          </div>
+        </div>
+        <p>总价：${{currFood.price * shoppingNum}}</p>
+
+        <div class="lockBtn" style="margin-top:10px;border-top:1px solid #ceaf92;text-align:right;background:#e8dedb;padding-top:10px;padding-bottom:10px;">
+          <van-button customStyle="background:transparent;border-color:transparent" @click="hideShop">取消</van-button>
+          <van-button customStyle="margin-right:10px;border-radius:3px;background-color:#805c4f;border-color:#6b4c41;height:30px;color:#fff"
+            @click="shopSettle"
+          >确定</van-button>
+        </div>
+      </div>
+    </van-popup>
+
+
+
+
+
     <!-- 勋章列表 -->
     <van-popup
       :show="modalAchievement"
@@ -683,6 +723,8 @@ import User from '@/components/user' //用户登录
 export default {
   data () {
     return {
+      shoppingNum: 0, // 购物数量
+      modalShop: false, //购买物品
       modalVistor:false,
       modalLogin:true, //用户登录开关
       isStudy:false,
@@ -819,6 +861,54 @@ export default {
     }
   },
   methods: {
+    // 领取成就奖励
+    receiveAwards: function(val) {
+      store.state.achievement.forEach(obj => {
+          if (obj.title === val) {
+              store.state.currAchievement = obj;
+              store.state.user.money += parseInt(obj.profit);
+              Notify({ type: 'success', message: '获得金币'+ parseInt(obj.profit) });
+              obj.completeID = 1;
+          }
+      })
+      store.dispatch("receiveawards", val);
+    },
+    shopSettle: function() {
+      var num = this.shoppingNum;
+      var name = store.state.currFood.name;
+      if (num == 0) {
+        Notify({ type: 'danger', message: '请输入购买数量' });
+        this.modalShop = false;
+        return false;
+      } else if (store.state.user.money < store.state.currFood.price * num) {
+
+        Notify({ type: 'danger', message: '不够金币购买' });
+        this.modalShop = false;
+        return false;
+      } else {
+        Notify({ type: 'success', message: "成功购买了" + num + "个" + name });
+        this.hidePopup();
+      }
+      store.dispatch("shopsettle", num);
+      this.hideShop();
+      this.shoppingNum = 0;
+    },
+
+    shopAdd: function() {
+      this.shoppingNum++;
+    },
+    shopReduce: function() {
+      this.shoppingNum--;
+    },
+    showShop: function(name) {
+      store.commit("shopFood", name);
+      this.modalShop = true;
+    },
+
+    hideShop: function() {
+      this.modalShop = false;
+    },
+
     //文字随机
     goText(){
       let index = 0;
@@ -1061,7 +1151,7 @@ export default {
             }
             store.state.content = format; // 显示倒计时
             // console.log('存档')
-            // store.dispatch("savegame");
+            store.dispatch("savegame");
           } else {
             clearInterval(timer); // 清除定时器
             store.dispatch("endeat"); // 喂食结束

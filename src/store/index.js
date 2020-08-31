@@ -55,6 +55,12 @@ const store = new Vuex.Store({
     currNickName:'' //当前用户昵称
   },
   mutations: {
+  
+    SHOP_SETTLE(state, num) {
+        state.currFood.num = num;
+        state.user.money = state.user.money - state.currFood.price * num;
+        console.log("购买了" + num + "个" + state.currFood.name);
+    },
     //更改uid
     SAVE_UID:(state,uid)=>{
         state.user.uid = uid;
@@ -187,8 +193,8 @@ const store = new Vuex.Store({
         state.endDate = endDate;
         state.currFood.num--;   // 扣除食物数量
         state.chick.eat = true;
-        // this.commit('checkAchievemnt', 1);
-        // this.commit('SAVE_GAME');
+        this.commit('checkAchievemnt', 1);
+        this.commit('SAVE_GAME');
     },
 
     // 获得成就方法
@@ -207,10 +213,11 @@ const store = new Vuex.Store({
                 obj.completeCurrCount += 1;
                 if (obj.completeCurrCount >= obj.completeNeedCount) {
                     obj.complete = true;
-                    if (typeof obj.oncomplete === 'function') {
-                        obj.oncomplete(state, obj);
-                        state.user.achievementNum++;
-                    }
+                    state.user.achievementNum++;
+                    // if (typeof obj.oncomplete === 'function') {
+                    //     obj.oncomplete(state, obj);
+                    //     state.user.achievementNum++;
+                    // }
                 }
             }
         })
@@ -241,6 +248,19 @@ const store = new Vuex.Store({
     },
   },
   actions: {
+     // 领取成就奖励
+     receiveawards(context, value) {
+        context.commit('SAVE_GAME');
+    },
+    // 存档
+    savegame(context) {
+        context.commit('SAVE_GAME');
+    },
+    // 购买商品
+    shopsettle(context, value) {
+        context.commit("SHOP_SETTLE", value);
+        context.commit('SAVE_GAME');
+    },
     //设置用户年级和学期、用户id、用户名称
     setusergrade(context,value){
         context.commit('SET_USER_GRADE_TERM',value);
