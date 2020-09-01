@@ -69,7 +69,7 @@
   width: 73.5px;
 }
 .house3 {
-  bottom: 88px;
+  bottom: 87.5px;
   left: 24px;
   width: 0;
   height: 0;
@@ -78,7 +78,7 @@
   border-bottom: 24px solid #e75c62;
 }
 .house31 {
-  bottom: 88px;
+  bottom: 87.5px;
   left: 12.16px;
   width: 0;
   height: 0;
@@ -87,7 +87,7 @@
   border-bottom: 35.2px solid #fff;
 }
 .house32 {
-  bottom: 88px;
+  bottom: 87.5px;
   left: 19.2px;
   width: 0;
   height: 0;

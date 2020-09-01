@@ -34,7 +34,9 @@ import stateGradeSemester from '@/utils/stateGradeSemester';
                 messages: [],
                 temessages:[],
                 isAble:true,
-                catchTerm:[]
+                catchTerm:[],
+                term_id:0,
+                grade_id:0
 
             }
         },
@@ -53,8 +55,11 @@ import stateGradeSemester from '@/utils/stateGradeSemester';
                         if(item.label.indexOf(curLabel)!==-1){
                             cur_data_term.push(item);
                             this.temessages.push(item.label);
+                            this.term_id = cur_data_term[0].value;
                         }
                     });
+
+                    this.data_term = cur_data_term;
                 },  
                 deep:true  //对象内部的属性监听，也叫深度监听  
             }
@@ -92,24 +97,39 @@ import stateGradeSemester from '@/utils/stateGradeSemester';
         },
         methods: {
             handlePickerChange (e) {
+                // console.log('年级。。。',e)
                 this.selectedIndex = e.mp.detail.value;
+                console.log("grade_idddddddd",this.selectedIndex);
             },
             handletermChange(e){
+                // console.log('学期',e,this.temessages)
                 this.termIndex = e.mp.detail.value;
+                // console.log(this.temessages[this.termIndex])
+                // console.log('data_termmmmmmm',this.data_term);
+                this.data_term.map((item,index)=>{
+                    if(item.label == this.temessages[this.termIndex]){
+                        this.term_id = item.value;
+                    }
+                })
+                // console.log(this.term_id,"this.term_id.....")
             },
             handleSubmit () {
                 //提交成功后提交用户信息
+                // console.log(this.term_id,"this.term_id.....")
+                if(this.term_id == 0){
+                    this.term_id = 1;
+                }
                 let obj = {
                     currId:store.state.currId,
                     currNickName:store.state.currNickName,
                     gradeId:this.selectedIndex,
-                    termId:this.termIndex
+                    termId:this.term_id
                 }
 
                 let objId = {
                     userId:store.state.currId,
                     gradeId:this.selectedIndex,
-                    termId:this.termIndex
+                    termId:this.term_id
                 }
                 
                 this.$httpWX.post_a({

@@ -504,9 +504,7 @@
       <div class="achievementBox">
 
         <p style="margin-bottom: 10px;text-align:center">
-          成就数量：
-          <span>{{targetList}}</span>
-          /{{achievement.length}}
+          勋章成就
         </p>
 
         <ul class="aList">
@@ -840,9 +838,17 @@ export default {
     currGood() {
       return store.state.currGood;
     },
+
     SecondToDate(){
-      return this.formatter(store.state.currFood.eatTime)
+      // console.log(store.state.currFood,"当前食物。。。")
+      if(store.state.currFood.eatTime){
+        // console.log(store.state.currFood)
+        return this.formatter(store.state.currFood.eatTime)
+      }else{
+        return true
+      }
     },
+
     //倒计时
     content() {
       return store.state.content;
@@ -1827,7 +1833,7 @@ export default {
 .subject-list {
   display: flex;
   flex-wrap: wrap;
-  height: 300px;
+  height: 270px;
   overflow-y: auto;
   /* justify-content: space-around; */
 }

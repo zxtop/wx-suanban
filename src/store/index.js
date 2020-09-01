@@ -16,7 +16,7 @@ const store = new Vuex.Store({
     user: {
         uid: 0,             //用户ID
         gradeId:0,          //用户年级ID
-        termId: 0,          //用户年级学期ID
+        termId: 1,          //用户年级学期ID
         firstGame: 0, 
         name: '闯关小英雄',
         money: 3000,    
