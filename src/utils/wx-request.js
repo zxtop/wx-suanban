@@ -29,9 +29,9 @@ function request (url, method, data, header = {}) {
 }
 
 function request_a (url, method, data, header = {}) {
-  wx.showLoading({
-    title: '加载中' //数据请求前loading
-  })
+  // wx.showLoading({
+  //   title: '加载中' //数据请求前loading
+  // })
   return new Promise((resolve, reject) => {
     wx.request({
       url: myHost + url, // 接口地址

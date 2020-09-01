@@ -49,7 +49,7 @@ const store = new Vuex.Store({
     subjectList: subjects.subjects, // 学习题目
     currSubject: {},  // 当前关卡
     currSubjectId:0,  //当前学科
-    goods: [],// 物品，收获物品
+    goods: [],          // 物品，收获物品
     token: null,
     currId:0,  //当前用户id
     currNickName:'' //当前用户昵称
