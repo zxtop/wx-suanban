@@ -1,6 +1,5 @@
 <template>
     <form>
-        
         <span>请选择年级：</span>
         <picker @change="handlePickerChange" :value="selectedIndex" :range="messages" style="display:inline-block">
             <view class="picker">
@@ -10,7 +9,7 @@
 
         <div style="margin-top:20px"></div>
         <span>请选择学期：</span>
-        <picker @change="handletermChange" :value="termIndex" :range="temessages" style="display:inline-block">
+        <picker @change="handletermChange" :disabled="isAble" :value="termIndex" :range="temessages" style="display:inline-block">
             <view class="picker">
                 <span style="display:inline-block;background:#e88d35;border-radius:5px;color:#fff;padding:5px 10px;border-width:3px;border-color:#d0853e">{{ temessages[termIndex] }}</span>
             </view>
@@ -60,6 +59,7 @@ import stateGradeSemester from '@/utils/stateGradeSemester';
                     });
 
                     this.data_term = cur_data_term;
+                    this.isAble = false;
                 },  
                 deep:true  //对象内部的属性监听，也叫深度监听  
             }

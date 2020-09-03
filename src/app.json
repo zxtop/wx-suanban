@@ -1,6 +1,5 @@
 {
   "pages": [
-    "pages/index/main",
     "pages/counter/main",
     "pages/subject/main"
   ],
