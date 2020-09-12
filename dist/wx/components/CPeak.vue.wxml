@@ -1,0 +1,26 @@
+<template name="0e19457d">
+  <view class="_div data-v-35eb1ad8 peakBox" title="山峰风车">
+    <view class="_div data-v-35eb1ad8 peak1"></view>
+    <view class="_div data-v-35eb1ad8 peak2"></view>
+    <view class="_div data-v-35eb1ad8 peak3"></view>
+    <view class="_div data-v-35eb1ad8 peak4"></view>
+    <view class="_div data-v-35eb1ad8 peak5"></view>
+    <view class="_div data-v-35eb1ad8 peak6"></view>
+    <view class="_div data-v-35eb1ad8 peak7">
+      <view class="_div data-v-35eb1ad8 peak71"></view>
+      <view class="_div data-v-35eb1ad8 peak72"></view>
+    </view>
+    <view class="_div data-v-35eb1ad8 peak8"></view>
+    <view class="_div data-v-35eb1ad8 peak9"></view>
+    <view class="_div data-v-35eb1ad8 windmill">
+      <view class="_div data-v-35eb1ad8 windmill1"></view>
+      <view class="_div data-v-35eb1ad8 windmill2"></view>
+      <view class="_div data-v-35eb1ad8 windmill3"></view>
+      <view class="_div data-v-35eb1ad8 windmill4"></view>
+      <view class="_div data-v-35eb1ad8 windmill5">
+        <view class="_div data-v-35eb1ad8 windmill51"></view>
+        <view class="_div data-v-35eb1ad8 windmill52"></view>
+      </view>
+    </view>
+  </view>
+</template>

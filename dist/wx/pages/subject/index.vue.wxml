@@ -1,0 +1,57 @@
+<import src="/components/CBg.vue.wxml" />
+<import src="/components/CGhost.vue.wxml" />
+<import src="/components/CBox.vue.wxml" /><template name="26c98b99">
+  <view class="_div data-v-bd9b942e subject-wrap"><template data="{{...$root[$kk+'0'], $root}}" is="1f056763"></template>
+    <view class="_div data-v-bd9b942e questionform" wx:if="{{!fail && !success}}">
+      <view class="_div data-v-bd9b942e title_bg">
+        <image src="{{dt_img}}" alt class="_img data-v-bd9b942e"></image> <label class="_span data-v-bd9b942e">{{question_index}}/10</label>
+      </view>
+      <view class="_div data-v-bd9b942e question_pro_ifo">
+        <view class="_div data-v-bd9b942e question_proess">
+          <view class="_div data-v-bd9b942e proess_out">
+            <van-progress percentage="{{proess_in}}" color="#59db08" stroke-width="10px" show-pivot="false" class="_van-progress data-v-bd9b942e vanpro"></van-progress>
+          </view>
+        </view>
+      </view>
+      <view class="_div data-v-bd9b942e text-main2">
+        <view class="_div data-v-bd9b942e main2_content" style="height:500px;overflow-y:auto">
+          <view class="_div data-v-bd9b942e showQuestion">
+            <rich-text class="_div data-v-bd9b942e question_content" style="font-size:14px" nodes="{{questionForm.content}}"></rich-text>
+            <view class="_div data-v-bd9b942e questio_option">
+              <rich-text style="font-size:14px;" nodes="{{questionForm.option}}" class="_p data-v-bd9b942e"></rich-text>
+            </view>
+          </view>
+          <view class="_div data-v-bd9b942e select_judge" wx:if="{{questionForm.type && questionForm.type.name =='判断题'}}">
+            <view ref="btn_out1" id="btn_out1" class="_ul data-v-bd9b942e">
+              <view class="_li data-v-bd9b942e btn" wx:key="index" key="{{index}}" wx:for="{{yes_no_option}}" wx:for-index="index" wx:for-item="item">
+                <view class="_div data-v-bd9b942e loading-dock"><button class="_button data-v-bd9b942e submit {{[item.close ? 'wrong' : '', item.checkmark ? 'correct' : '']}}" bindtap="handleProxy" disabled="{{item.isactive}}" data-eventid="{{'0_'+index}}" data-comkey="{{$k}}"><label class="_span data-v-bd9b942e">
+                      <van-icon name="success" wx:if="{{item.checkmark}}" class="_van-icon data-v-bd9b942e"></van-icon>
+                    </label> <label class="_span data-v-bd9b942e">
+                      <van-icon name="cross" wx:if="{{item.close}}" class="_van-icon data-v-bd9b942e"></van-icon>
+                    </label>
+                    {{item.text}}
+                  </button></view>
+              </view>
+            </view>
+          </view>
+          <view class="_div data-v-bd9b942e select_option" wx:if="{{questionForm.type && questionForm.type.name != '判断题'}}">
+            <view ref="btn_out2" id="btn_out2" class="_ul data-v-bd9b942e">
+              <view class="_li data-v-bd9b942e btn" wx:key="index" key="{{index}}" wx:for="{{choice_option}}" wx:for-index="index" wx:for-item="item">
+                <view class="_div data-v-bd9b942e loading-dock"><button class="_button data-v-bd9b942e submit {{[item.close ? 'wrong' : '', item.checkmark ? 'correct' : '']}}" bindtap="handleProxy" disabled="{{item.isactive}}" data-eventid="{{'1_'+index}}" data-comkey="{{$k}}"><label class="_span data-v-bd9b942e">
+                      <van-icon name="success" wx:if="{{item.checkmark}}" class="_van-icon data-v-bd9b942e"></van-icon>
+                    </label> <label class="_span data-v-bd9b942e">
+                      <van-icon name="cross" wx:if="{{item.close}}" class="_van-icon data-v-bd9b942e"></van-icon>
+                    </label>
+                    {{item.text}}
+                  </button></view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="_div data-v-bd9b942e result_fail" wx:if="{{fail}}"><template bindoutResetQuestionList="handleProxy" data-eventid="{{'2'}}" data-comkey="{{$k}}" data="{{...$root[$kk+'6'], $root}}" is="a77a763e"></template></view>
+    <view class="_div data-v-bd9b942e result_success" wx:if="{{success}}"><template bindoutResetQuestionList="handleProxy" bindoutQuestionList="handleProxy" data-eventid="{{'3'}}" data-comkey="{{$k}}" data="{{...$root[$kk+'7'], $root}}" is="597f3ec6"></template></view>
+    <van-notify id="van-notify" class="_van-notify data-v-bd9b942e"></van-notify>
+  </view>
+</template>

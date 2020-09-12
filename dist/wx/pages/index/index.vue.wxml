@@ -1,0 +1,15 @@
+<template name="7c581902">
+  <view class="_div data-v-5daef28f container">
+    <view class="_div data-v-5daef28f loading">
+      <view class="_div data-v-5daef28f pic">
+        <view id="preloader_6" class="_div data-v-5daef28f"><label class="_span data-v-5daef28f"></label> <label class="_span data-v-5daef28f"></label> <label class="_span data-v-5daef28f"></label> <label class="_span data-v-5daef28f"></label></view>
+      </view>
+      <view class="_div data-v-5daef28f press">
+        <view wx:if="{{showPress}}" class="_p data-v-5daef28f">
+          <van-progress percentage="{{percent}}" stroke-width="{{15}}" class="_van-progress data-v-5daef28f"></van-progress>
+        </view>
+        <view wx:if="{{!showPress}}" class="_p data-v-5daef28f"><label bindtap="handleProxy" data-eventid="{{'0'}}" data-comkey="{{$k}}" class="_span data-v-5daef28f">进入游戏</label></view>
+      </view>
+    </view>
+  </view>
+</template>

@@ -1,0 +1,43 @@
+<template name="2be77860">
+  <view id="app" class="_div data-v-5c20cc69">
+    <view class="_div data-v-5c20cc69 container-user">
+      <view hidden="{{!(isLog)}}" class="_div data-v-5c20cc69 user-panle-log {{[isLog ? 'show-in' : '']}}">
+        <view style="padding:20px;text-align:center" class="_p data-v-5c20cc69">用户登录</view>
+        <form class="_form data-v-5c20cc69">
+          <view class="_div data-v-5c20cc69 user-message" style="padding:0px 20px">
+            <van-field value="{{formValidate.userMobile}}" placeholder="请输入手机号" border="true" bindchange="handleProxy" required data-eventid="{{'0'}}" data-comkey="{{$k}}" class="_van-field data-v-5c20cc69"></van-field>
+            <view style="margin-bottom:20px" class="_div data-v-5c20cc69"></view>
+            <van-field value="{{formValidate.passWord}}" placeholder="请输入密码" border="true" bindchange="handleProxy" type="password" required data-eventid="{{'1'}}" data-comkey="{{$k}}" class="_van-field data-v-5c20cc69"></van-field>
+            <view style="margin-bottom:20px" class="_div data-v-5c20cc69"></view>
+          </view>
+          <view class="_div data-v-5c20cc69">
+            <van-button type="primary" bindtap="handleProxy" customStyle="background:#805c4f;color:#fff;border-color:#6b4c41;border-radius:3px;height:30px;margin-right:10px" data-eventid="{{'2'}}" data-comkey="{{$k}}" class="_van-button data-v-5c20cc69">登录</van-button> <label class="_span data-v-5c20cc69">还没注册?</label> <label style="color:blue" bindtap="handleProxy" data-eventid="{{'3'}}" data-comkey="{{$k}}" class="_span data-v-5c20cc69">点击注册</label>
+          </view>
+        </form>
+        <view class="_div data-v-5c20cc69 user_visitor" style="margin-bottom:20px"><label style="color:#E88D35" bindtap="handleProxy" data-eventid="{{'4'}}" data-comkey="{{$k}}" class="_span data-v-5c20cc69">游客登录</label></view>
+      </view>
+      <view hidden="{{!(!isLog)}}" class="_div data-v-5c20cc69 user-panle-reg {{[!isLog ? 'show-in' : '']}}">
+        <view style="padding:20px;text-align:center" class="_p data-v-5c20cc69">用户注册</view>
+        <form class="_form data-v-5c20cc69">
+          <view class="_div data-v-5c20cc69 user-message" style="padding:0px 20px">
+            <van-field value="{{regValidate.userMobile}}" placeholder="请输入手机号" border="true" bindchange="handleProxy" required data-eventid="{{'5'}}" data-comkey="{{$k}}" class="_van-field data-v-5c20cc69"></van-field>
+            <view style="margin-bottom:20px" class="_div data-v-5c20cc69"></view>
+            <van-field value="{{regValidate.userEmail}}" placeholder="请输入邮箱" border="true" bindchange="handleProxy" required data-eventid="{{'6'}}" data-comkey="{{$k}}" class="_van-field data-v-5c20cc69"></van-field>
+            <view style="margin-bottom:20px" class="_div data-v-5c20cc69"></view>
+            <van-field value="{{regValidate.passWord}}" placeholder="请输入密码" border="true" bindchange="handleProxy" required type="password" data-eventid="{{'7'}}" data-comkey="{{$k}}" class="_van-field data-v-5c20cc69"></van-field>
+            <view style="margin-bottom:20px" class="_div data-v-5c20cc69"></view>
+            <van-field value="{{regValidate.passwdCheck}}" placeholder="请再次输入密码" border="true" bindchange="handleProxy" required type="password" data-eventid="{{'8'}}" data-comkey="{{$k}}" class="_van-field data-v-5c20cc69"></van-field>
+            <view style="margin-bottom:20px" class="_div data-v-5c20cc69"></view>
+            <van-field value="{{regValidate.nickName}}" placeholder="姓名" border="true" bindchange="handleProxy" data-eventid="{{'9'}}" data-comkey="{{$k}}" class="_van-field data-v-5c20cc69"></van-field>
+            <view style="margin-bottom:20px" class="_div data-v-5c20cc69"></view>
+          </view>
+          <view class="_div data-v-5c20cc69">
+            <van-button type="primary" bindtap="handleProxy" customStyle="background:#805c4f;color:#fff;border-color:#6b4c41;border-radius:3px;height:30px;margin-right:10px" data-eventid="{{'10'}}" data-comkey="{{$k}}" class="_van-button data-v-5c20cc69">提交</van-button> <label class="_span data-v-5c20cc69">已有账号?</label> <label style="color:blue" bindtap="handleProxy" data-eventid="{{'11'}}" data-comkey="{{$k}}" class="_span data-v-5c20cc69">点击登录</label>
+          </view>
+          <view style="margin-bottom:20px" class="_div data-v-5c20cc69"></view>
+        </form>
+      </view>
+    </view>
+    <van-toast id="van-toast" class="_van-toast data-v-5c20cc69"></van-toast>
+  </view>
+</template>

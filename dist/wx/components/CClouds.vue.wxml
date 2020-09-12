@@ -1,0 +1,7 @@
+<template name="a3a74708">
+  <view class="_div data-v-e4f2c05a clouds" title="白云">
+    <view class="_div data-v-e4f2c05a cloud x1"></view>
+    <view class="_div data-v-e4f2c05a cloud x2"></view>
+    <view class="_div data-v-e4f2c05a cloud x3"></view>
+  </view>
+</template>

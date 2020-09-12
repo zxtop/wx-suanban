@@ -1,0 +1,27 @@
+<template name="a77a763e">
+  <view class="_div data-v-99118aac ghost">
+    <view class="_h1 data-v-99118aac">挑战失败！继续努力哦</view>
+    <view class="_div data-v-99118aac body">
+      <view class="_div data-v-99118aac face_ghost">
+        <view class="_div data-v-99118aac eye left"></view>
+        <view class="_div data-v-99118aac eye right"></view>
+        <view class="_div data-v-99118aac smile"></view>
+        <view class="_div data-v-99118aac rosy left"></view>
+        <view class="_div data-v-99118aac rosy right"></view>
+      </view>
+      <view class="_div data-v-99118aac arm left"></view>
+      <view class="_div data-v-99118aac arm right"></view>
+      <view class="_div data-v-99118aac bottom">
+        <view class="_div data-v-99118aac"></view>
+        <view class="_div data-v-99118aac"></view>
+        <view class="_div data-v-99118aac"></view>
+        <view class="_div data-v-99118aac"></view>
+        <view class="_div data-v-99118aac"></view>
+      </view>
+    </view>
+    <view class="_div data-v-99118aac shadow"></view>
+    <view class="_div data-v-99118aac dan_btn" style="text-align:center">
+      <van-button type="danger" round bindtap="handleProxy" data-eventid="{{'0'}}" data-comkey="{{$k}}" class="_van-button data-v-99118aac">继续闯关</van-button>
+    </view>
+  </view>
+</template>

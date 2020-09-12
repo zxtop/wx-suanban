@@ -1,0 +1,15 @@
+<template name="2d95ab52">
+  <form class="_form data-v-1f2cbfc0"><label class="_span data-v-1f2cbfc0">请选择年级：</label>
+    <picker bindchange="handleProxy" value="{{selectedIndex}}" range="{{messages}}" style="display:inline-block" data-eventid="{{'0'}}" data-comkey="{{$k}}" class="_picker data-v-1f2cbfc0">
+      <view class="_view data-v-1f2cbfc0 picker"><label style="display:inline-block;background:#e88d35;border-radius:5px;color:#fff;padding:5px 10px;border-width:3px;border-color:#d0853e" class="_span data-v-1f2cbfc0">{{ messages[selectedIndex] }}</label></view>
+    </picker>
+    <view style="margin-top:20px" class="_div data-v-1f2cbfc0"></view> <label class="_span data-v-1f2cbfc0">请选择学期：</label>
+    <picker bindchange="handleProxy" disabled="{{isAble}}" value="{{termIndex}}" range="{{temessages}}" style="display:inline-block" data-eventid="{{'1'}}" data-comkey="{{$k}}" class="_picker data-v-1f2cbfc0">
+      <view class="_view data-v-1f2cbfc0 picker"><label style="display:inline-block;background:#e88d35;border-radius:5px;color:#fff;padding:5px 10px;border-width:3px;border-color:#d0853e" class="_span data-v-1f2cbfc0">{{ temessages[termIndex] }}</label></view>
+    </picker>
+    <view style="margin-top:15px" class="_div data-v-1f2cbfc0"></view>
+    <view class="_div data-v-1f2cbfc0 form_btn" style="margin-bottom:15px">
+      <van-button type="primary" bindtap="handleProxy" customStyle="margin-right:10px;border-radius:3px;background-color:#805c4f;border-color:#6b4c41;height:30px;color:#fff" data-eventid="{{'2'}}" data-comkey="{{$k}}" class="_van-button data-v-1f2cbfc0">提交</van-button>
+    </view>
+  </form>
+</template>

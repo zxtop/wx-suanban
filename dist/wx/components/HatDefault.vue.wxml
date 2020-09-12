@@ -1,0 +1,5 @@
+<template name="f61aaeca">
+  <view class="_div data-v-4df511e4 suitDefault">
+    <image src="{{data.img}}" class="_img data-v-4df511e4"></image>
+  </view>
+</template>

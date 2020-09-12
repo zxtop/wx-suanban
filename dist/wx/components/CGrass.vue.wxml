@@ -1,0 +1,10 @@
+<template name="532d9ef0">
+  <view class="_div data-v-44c4b35e grass1" title="草"><label class="_span data-v-44c4b35e"></label> <label class="_span data-v-44c4b35e"></label> <label class="_span data-v-44c4b35e"></label> <label class="_span data-v-44c4b35e"></label> <label class="_span data-v-44c4b35e"></label> <label class="_span data-v-44c4b35e"></label>
+    <view class="_div data-v-44c4b35e triangleBox">
+      <view class="_div data-v-44c4b35e item"></view>
+      <view class="_div data-v-44c4b35e item"></view>
+      <view class="_div data-v-44c4b35e item"></view>
+      <view class="_div data-v-44c4b35e item"></view>
+    </view>
+  </view>
+</template>

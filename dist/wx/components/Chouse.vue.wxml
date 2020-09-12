@@ -1,0 +1,17 @@
+<template name="46615ddc">
+  <view class="_div data-v-37f8724a house" title="房子">
+    <view class="_div data-v-37f8724a house1"></view>
+    <view class="_div data-v-37f8724a house21"></view>
+    <view class="_div data-v-37f8724a house22"></view>
+    <view class="_div data-v-37f8724a house2"></view>
+    <view class="_div data-v-37f8724a house31"></view>
+    <view class="_div data-v-37f8724a house32"></view>
+    <view class="_div data-v-37f8724a house3"></view>
+    <view class="_div data-v-37f8724a house4"></view>
+    <view class="_div data-v-37f8724a house5"></view>
+    <view class="_div data-v-37f8724a house6"></view>
+    <view class="_div data-v-37f8724a house7"></view>
+    <view class="_div data-v-37f8724a house8"></view>
+    <view class="_div data-v-37f8724a house9"></view>
+  </view>
+</template>

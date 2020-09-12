@@ -1,0 +1,20 @@
+<template name="3c1d478e">
+  <view class="_div data-v-6c569b97 trough" title="小狗">
+    <view class="_div data-v-6c569b97 dog">
+      <view class="_div data-v-6c569b97 dog-head">
+        <view class="_div data-v-6c569b97 dog-ears ears-left"></view>
+        <view class="_div data-v-6c569b97 dog-ears ears-right"></view>
+        <view class="_div data-v-6c569b97 dog-eyes"></view>
+        <view class="_div data-v-6c569b97 dog-mouth">
+          <view class="_div data-v-6c569b97 dog-nose"></view>
+          <view class="_div data-v-6c569b97 dog-tongue"></view>
+        </view>
+      </view>
+      <view class="_div data-v-6c569b97 dog-tail"></view>
+      <view class="_div data-v-6c569b97 dog-body">
+        <view class="_div data-v-6c569b97 dog-foot"></view>
+      </view>
+      <view class="_div data-v-6c569b97 ball"></view>
+    </view>
+  </view>
+</template>

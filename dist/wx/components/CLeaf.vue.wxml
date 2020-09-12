@@ -1,0 +1,8 @@
+<template name="6e4e1c7c">
+  <view class="_div data-v-453f4993 leafBox" title="叶子">
+    <view class="_div data-v-453f4993 leafItem leaf1"></view>
+    <view class="_div data-v-453f4993 leafItem leaf2"></view>
+    <view class="_div data-v-453f4993 leafItem leaf3"></view>
+    <view class="_div data-v-453f4993 leafItem leaf4"></view>
+  </view>
+</template>

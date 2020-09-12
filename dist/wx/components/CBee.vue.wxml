@@ -1,0 +1,30 @@
+<template name="7db7a858">
+  <view class="_div data-v-1d450046 beeBox" title="蜜蜂鲜花">
+    <view class="_div data-v-1d450046 soil two"></view>
+    <view class="_div data-v-1d450046 soil"></view>
+    <view class="_div data-v-1d450046 flowerpot">
+      <view class="_div data-v-1d450046 flowerpotTop"></view>
+      <view class="_div data-v-1d450046 flowerpotBottom"></view>
+    </view>
+    <view class="_div data-v-1d450046 flower">
+      <view class="_div data-v-1d450046 flowerTop">
+        <view class="_p data-v-1d450046"></view>
+        <view class="_p data-v-1d450046"></view>
+        <view class="_p data-v-1d450046"></view>
+        <view class="_p data-v-1d450046"></view>
+      </view>
+      <view class="_div data-v-1d450046 flowerHead"></view>
+    </view>
+    <view class="_div data-v-1d450046 bee">
+      <view class="_div data-v-1d450046 beeBody"></view>
+    </view>
+    <view class="_div data-v-1d450046 bee bee2">
+      <view class="_div data-v-1d450046 beeBody"></view>
+    </view>
+    <view class="_div data-v-1d450046 triangleBox two">
+      <view class="_div data-v-1d450046 item"></view>
+      <view class="_div data-v-1d450046 item"></view>
+      <view class="_div data-v-1d450046 item"></view>
+    </view>
+  </view>
+</template>

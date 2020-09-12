@@ -1,0 +1,5 @@
+<template name="1f056763">
+  <view class="_div data-v-7486238c subject_bg">
+    <image src="{{random}}" class="_img data-v-7486238c"></image>
+  </view>
+</template>

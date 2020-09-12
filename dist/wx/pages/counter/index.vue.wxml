@@ -1,0 +1,352 @@
+<import src="/components/CSunlight.vue.wxml" />
+<import src="/components/CPeak.vue.wxml" />
+<import src="/components/CClouds.vue.wxml" />
+<import src="/components/CGrass.vue.wxml" />
+<import src="/components/Chouse.vue.wxml" />
+<import src="/components/CFence.vue.wxml" />
+<import src="/components/CBee.vue.wxml" />
+<import src="/components/CDasuan.vue.wxml" />
+<import src="/components/CLeaf.vue.wxml" />
+<import src="/components/CDog.vue.wxml" />
+<import src="/components/SuitDefault.vue.wxml" />
+<import src="/components/SuitForg.vue.wxml" />
+<import src="/components/SuitSuper.vue.wxml" />
+<import src="/components/HatDefault.vue.wxml" />
+<import src="/components/HatForg.vue.wxml" />
+<import src="/components/UGrade.vue.wxml" />
+<import src="/components/user.vue.wxml" /><template name="36706f2e">
+  <view class="_div data-v-5f3072b9 counter-warp {{[skinBox ? 'beingskin' : '']}}">
+    <view class="_div data-v-5f3072b9 game-title">蒜瓣闯关</view>
+    <view class="_div data-v-5f3072b9 user-box" bindtap="handleProxy" data-eventid="{{'0'}}" data-comkey="{{$k}}">
+      <view class="_div data-v-5f3072b9 user-logo">
+        <view class="_div data-v-5f3072b9 user-level">{{chick.level}}</view> <label class="_span data-v-5f3072b9 portrait-item portrait0">
+          <image src="/assets/images/portrait0.jpg" style="width:41px;height:38px" class="_img data-v-5f3072b9"></image>
+        </label>
+      </view>
+      <view class="_div data-v-5f3072b9 user-info">
+        <view class="_div data-v-5f3072b9 user-name">{{user.name}}</view>
+        <view class="_div data-v-5f3072b9 user-money">
+          <view class="_div data-v-5f3072b9 user-mi">
+            <van-icon name="gold-coin-o" class="_van-icon data-v-5f3072b9"></van-icon>
+          </view>
+          <view class="_p data-v-5f3072b9">{{user.money}}</view>
+        </view>
+      </view>
+    </view>
+    <view class="_div data-v-5f3072b9 navcontent">
+      <view class="_ul data-v-5f3072b9 navList">
+        <view bindtap="handleProxy" data-eventid="{{'1'}}" data-comkey="{{$k}}" class="_li data-v-5f3072b9"><label class="_span data-v-5f3072b9 navIcon">
+            <van-icon name="manager" class="_van-icon data-v-5f3072b9"></van-icon>
+          </label> <label class="_span data-v-5f3072b9 navName">装扮</label></view>
+        <view bindtap="handleProxy" data-eventid="{{'2'}}" data-comkey="{{$k}}" class="_li data-v-5f3072b9"><label class="_span data-v-5f3072b9 navIcon">
+            <van-icon name="shop" class="_van-icon data-v-5f3072b9"></van-icon>
+          </label> <label class="_span data-v-5f3072b9 navName">背包</label></view>
+        <view bindtap="handleProxy" data-eventid="{{'3'}}" data-comkey="{{$k}}" class="_li data-v-5f3072b9"><label class="_span data-v-5f3072b9 navIcon">
+            <van-icon name="award" class="_van-icon data-v-5f3072b9"></van-icon>
+          </label> <label class="_span data-v-5f3072b9 navName">勋章</label></view>
+        <view bindtap="handleProxy" class="_li data-v-5f3072b9 n-green" data-eventid="{{'4'}}" data-comkey="{{$k}}"><label class="_span data-v-5f3072b9 navIcon">
+            <van-icon name="fire" class="_van-icon data-v-5f3072b9"></van-icon>
+          </label> <label class="_span data-v-5f3072b9 navName">闯关</label></view>
+      </view>
+      <view class="_ul data-v-5f3072b9 navHelp">
+        <view bindtap="handleProxy" data-eventid="{{'5'}}" data-comkey="{{$k}}" class="_li data-v-5f3072b9"><label class="_span data-v-5f3072b9 navIcon">
+            <van-icon name="question" class="_van-icon data-v-5f3072b9"></van-icon>
+          </label> <label class="_span data-v-5f3072b9 navName">帮助</label></view>
+      </view>
+    </view>
+    <view class="_div data-v-5f3072b9 content"><template data="{{...$root[$kk+'6'], $root}}" is="50527a68"></template> <template data="{{...$root[$kk+'7'], $root}}" is="0e19457d"></template> <template data="{{...$root[$kk+'8'], $root}}" is="a3a74708"></template>
+      <view class="_div data-v-5f3072b9 landWrap"><template data="{{...$root[$kk+'9'], $root}}" is="532d9ef0"></template> <template data="{{...$root[$kk+'10'], $root}}" is="46615ddc"></template> <template data="{{...$root[$kk+'11'], $root}}" is="e158acfa"></template> <template data="{{...$root[$kk+'12'], $root}}" is="7db7a858"></template> <template data="{{...$root[$kk+'13'], $root}}" is="44b686ac"></template></view> <template data="{{...$root[$kk+'14'], $root}}" is="6e4e1c7c"></template> <template data="{{...$root[$kk+'15'], $root}}" is="3c1d478e"></template>
+      <view class="_div data-v-5f3072b9 chick">
+        <view class="_div data-v-5f3072b9 chick-swiper"><label class="_span data-v-5f3072b9">{{randomText}}</label></view>
+        <view class="_div data-v-5f3072b9 countdown-box">
+          <view class="_p data-v-5f3072b9 countdown-text {{[!chick.eat ? 'active' : '']}}">{{content}}</view>
+          <view class="_div data-v-5f3072b9 progress" wx:if="{{value != 0 && value < 100}}">
+            <view class="_div data-v-5f3072b9 progress-content" style=" {{'width:' + value + '%'}}"></view>
+          </view>
+        </view>
+        <view class="_div data-v-5f3072b9 chickBody">
+          <view class="_div data-v-5f3072b9 skinSuit" hidden="{{!(chick.currentCompId == 0)}}"><template wx:if="{{chick.componentSuit == 'suit-default'}}" data="{{...$root[$kk+'16'], $root}}" is="40f6accf"></template> <template wx:if="{{chick.componentSuit == 'suit-forg'}}" data="{{...$root[$kk+'17'], $root}}" is="370d70c0"></template> <template wx:if="{{chick.componentSuit == 'suit-super'}}" data="{{...$root[$kk+'18'], $root}}" is="37d7be89"></template></view>
+          <view class="_div data-v-5f3072b9 skinsHat" hidden="{{!(chick.currentCompId == 1)}}"><template wx:if="{{chick.componentHat == 'hat-default'}}" data="{{...$root[$kk+'19'], $root}}" is="f61aaeca"></template> <template wx:if="{{chick.componentHat == 'hat-forg'}}" data="{{...$root[$kk+'20'], $root}}" is="1027bf54"></template></view>
+        </view>
+        <view class="_div data-v-5f3072b9 eye {{[  chick.currentPlay == '1forg' ? 'eye_hat' : '',  chick.currentPlay == '0super' ? 'eye_super' : '']}}"><label class="_span data-v-5f3072b9"></label> <label class="_span data-v-5f3072b9"></label></view>
+      </view>
+      <view class="_div data-v-5f3072b9 popupMask" hidden="{{!(skinBox)}}" bindtap="handleProxy" data-eventid="{{'6'}}" data-comkey="{{$k}}"></view>
+    </view>
+    <view class="_div data-v-5f3072b9 pagePopup">
+      <view class="_div data-v-5f3072b9 popupItem" hidden="{{!(isSkin)}}">
+        <view class="_div data-v-5f3072b9 popupHead borderBottom1px"><label class="_span data-v-5f3072b9 popup-title fl">装扮</label>
+          <view class="_i data-v-5f3072b9">
+            <van-icon name="close" bindtap="handleProxy" data-eventid="{{'7'}}" data-comkey="{{$k}}" class="_van-icon data-v-5f3072b9"></van-icon>
+          </view>
+        </view>
+        <view class="_div data-v-5f3072b9 popupContent">
+          <van-tabs active="{{tabactive}}" bindchange="handleProxy" wx:if="{{isSkin}}" data-eventid="{{'10'}}" data-comkey="{{$k}}" class="_van-tabs data-v-5f3072b9">
+            <van-tab title="套装" class="_van-tab data-v-5f3072b9">
+              <view class="_ul data-v-5f3072b9 opt-list">
+                <view wx:key="index" key="{{index}}" bindtap="handleProxy" data-eventid="{{'8_'+index}}" data-comkey="{{$k}}" wx:for="{{suits}}" wx:for-index="index" wx:for-item="suit" class="_li data-v-5f3072b9 {{['opt-btn', [chick.currentSuit === suit.id ? 'active' : '']]}}"><label class="_span data-v-5f3072b9 opt-mask">
+                    <view class="_i data-v-5f3072b9">
+                      <van-icon name="checked" class="_van-icon data-v-5f3072b9"></van-icon>
+                    </view>
+                  </label>
+                  {{suit.name}}
+                </view>
+              </view>
+            </van-tab>
+            <van-tab title="帽子" class="_van-tab data-v-5f3072b9">
+              <view class="_ul data-v-5f3072b9 opt-list">
+                <view wx:key="index" key="{{index}}" bindtap="handleProxy" data-eventid="{{'9_'+index}}" data-comkey="{{$k}}" wx:for="{{hats}}" wx:for-index="index" wx:for-item="hat" class="_li data-v-5f3072b9 {{['opt-btn', [chick.currentHat === hat.id ? 'active' : '']]}}"><label class="_span data-v-5f3072b9 opt-mask">
+                    <view class="_i data-v-5f3072b9">
+                      <van-icon name="checked" class="_van-icon data-v-5f3072b9"></van-icon>
+                    </view>
+                  </label>
+                  {{hat.name}}
+                </view>
+              </view>
+            </van-tab>
+          </van-tabs>
+        </view>
+      </view>
+      <view class="_div data-v-5f3072b9 popupItem" hidden="{{!(isBag)}}">
+        <view class="_div data-v-5f3072b9 popupHead borderBottom1px"><label class="_span data-v-5f3072b9 popup-title fl">背包</label>
+          <view class="_i data-v-5f3072b9">
+            <van-icon name="close" bindtap="handleProxy" data-eventid="{{'11'}}" data-comkey="{{$k}}" class="_van-icon data-v-5f3072b9"></van-icon>
+          </view>
+        </view>
+        <view class="_div data-v-5f3072b9 popupContent">
+          <van-tabs active="{{tab2active}}" bindchange="handleProxy" wx:if="{{isBag}}" data-eventid="{{'16'}}" data-comkey="{{$k}}" class="_van-tabs data-v-5f3072b9">
+            <van-tab title="道具" class="_van-tab data-v-5f3072b9">
+              <view class="_div data-v-5f3072b9 food-box">
+                <view class="_ul data-v-5f3072b9 foodList">
+                  <view bindtap="handleProxy" wx:key="index" key="{{index}}" data-eventid="{{'14_'+index}}" data-comkey="{{$k}}" wx:for="{{foods}}" wx:for-index="index" wx:for-item="food" class="_li data-v-5f3072b9 {{[food.num == 0 || food.unlock == 0 ? 'isMask' : '']}}">
+                    <view class="_div data-v-5f3072b9 foodItem">
+                      <view class="_div data-v-5f3072b9 foodImg">
+                        <image src="{{food.url}}" class="_img data-v-5f3072b9"></image>
+                      </view>
+                      <view class="_p data-v-5f3072b9 foodName">{{food.name}}</view> <label class="_span data-v-5f3072b9 foodNum" wx:if="{{food.num !== 0}}">{{food.num}}</label>
+                      <view class="_div data-v-5f3072b9 maskBg shortageTips" catchtap="handleProxy" wx:if="{{food.num == 0 && food.unlock == 1}}" data-eventid="{{'12_'+index}}" data-comkey="{{$k}}">
+                        <van-button type="primary" size="small" class="_van-button data-v-5f3072b9">购买</van-button>
+                      </view>
+                      <view class="_div data-v-5f3072b9 maskBg shortageTips" wx:if="{{food.unlock == 0}}" catchtap="handleProxy" data-eventid="{{'13_'+index}}" data-comkey="{{$k}}">
+                        <van-button type="warning" size="small" class="_van-button data-v-5f3072b9">解锁</van-button>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </van-tab>
+            <van-tab title="收成" class="_van-tab data-v-5f3072b9">
+              <view class="_div data-v-5f3072b9 food-box">
+                <view class="_ul data-v-5f3072b9 foodList">
+                  <view hidden="{{!(good.num != 0)}}" bindtap="handleProxy" wx:key="index" key="{{index}}" data-eventid="{{'15_'+index}}" data-comkey="{{$k}}" wx:for="{{goods}}" wx:for-index="index" wx:for-item="good" class="_li data-v-5f3072b9">
+                    <view class="_div data-v-5f3072b9 foodItem">
+                      <view class="_div data-v-5f3072b9 foodImg egg-img">
+                        <image src="{{good.url}}" class="_img data-v-5f3072b9"></image>
+                      </view>
+                      <view class="_p data-v-5f3072b9 foodName">{{good.name}}</view> <label class="_span data-v-5f3072b9 foodNum">{{good.num}}</label>
+                    </view>
+                  </view>
+                </view>
+                <view class="_div data-v-5f3072b9 no-data" hidden="{{!(goods.length == 0)}}">暂无物品</view>
+              </view>
+            </van-tab>
+          </van-tabs>
+        </view>
+      </view>
+      <view class="_div data-v-5f3072b9 popupItem" hidden="{{!(isStudy)}}">
+        <view class="_div data-v-5f3072b9 popupHead borderBottom1px"><label class="_span data-v-5f3072b9 popup-title fl">闯关</label>
+          <view class="_i data-v-5f3072b9">
+            <van-icon name="close" bindtap="handleProxy" data-eventid="{{'17'}}" data-comkey="{{$k}}" class="_van-icon data-v-5f3072b9"></van-icon>
+          </view>
+        </view>
+        <view class="_div data-v-5f3072b9 popupContent">
+          <van-tabs active="{{tab3active}}" bindchange="handleProxy" wx:if="{{isStudy}}" data-eventid="{{'19'}}" data-comkey="{{$k}}" class="_van-tabs data-v-5f3072b9">
+            <van-tab wx:key="index1" key="{{index1}}" title="{{subject.type}}" wx:for="{{subjectList}}" wx:for-index="index1" wx:for-item="subject" class="_van-tab data-v-5f3072b9">
+              <view class="_ul data-v-5f3072b9 subject-list">
+                <view wx:key="index" key="{{index}}" bindtap="handleProxy" data-eventid="{{'18_'+index1+'-'+index}}" data-comkey="{{$k}}" wx:for="{{subject.list}}" wx:for-index="index" wx:for-item="item" class="_li data-v-5f3072b9 {{[item.learning == 1 ? 'on' : '', item.learning == 2 ? 'over' : '']}}">
+                  <view class="_div data-v-5f3072b9 subject-img">
+                    <view class="_div data-v-5f3072b9 learning-label"><label wx:if="{{item.learning == 0}}" class="_span data-v-5f3072b9">未通关</label> <label wx:if="{{item.learning == 1}}" class="_span data-v-5f3072b9">通关中</label> <label wx:if="{{item.learning == 2}}" class="_span data-v-5f3072b9">已通关</label></view>
+                    <image src="{{item.img}}" alt class="_img data-v-5f3072b9"></image>
+                  </view>
+                  <view class="_p data-v-5f3072b9 subject-name">{{item.name}}</view>
+                </view>
+              </view>
+            </van-tab>
+          </van-tabs>
+        </view>
+      </view>
+    </view>
+    <van-popup show="{{modalGood}}" closeable close-icon="close" close-icon-position="top-right" bindclose="handleProxy" z-index="100000" customStyle="background:transparent;" data-eventid="{{'24'}}" data-comkey="{{$k}}" class="_van-popup data-v-5f3072b9">
+      <view class="_div data-v-5f3072b9 modal-box" wx:if="{{!goodDetails}}">
+        <view class="_div data-v-5f3072b9 food-t">
+          <view class="_p data-v-5f3072b9">物品名称：{{currGood.name}}</view>
+          <view class="_p data-v-5f3072b9">拥有数量：{{currGood.num}}</view>
+          <view class="_p data-v-5f3072b9">出售价值：${{currGood.price}}</view>
+          <view class="_div data-v-5f3072b9 food-t-btn">
+            <van-button customStyle="background:#805c4f;color:#fff;border-color:#6b4c41;border-radius:3px;height:30px;width:100%" bindtap="handleProxy" data-eventid="{{'20'}}" data-comkey="{{$k}}" class="_van-button data-v-5f3072b9">出售</van-button>
+          </view>
+        </view>
+      </view>
+      <view class="_div data-v-5f3072b9 shopping-box shoppingout" wx:if="{{goodDetails}}">
+        <view class="_div data-v-5f3072b9 shoppGood">
+          <view class="_p data-v-5f3072b9">{{currGood.name}}</view>
+          <view class="_div data-v-5f3072b9 num-form">
+            <view class="_div data-v-5f3072b9 shop-btn" bindtap="handleProxy" data-eventid="{{'21'}}" data-comkey="{{$k}}"><label class="_span data-v-5f3072b9">-</label></view>
+            <view class="_div data-v-5f3072b9 shop-input">
+              <view class="_b data-v-5f3072b9">{{sellNum}}</view>
+            </view>
+            <view class="_div data-v-5f3072b9 shop-btn" bindtap="handleProxy" data-eventid="{{'22'}}" data-comkey="{{$k}}">
+              <van-icon name="add" class="_van-icon data-v-5f3072b9"></van-icon>
+            </view>
+          </view>
+          <view class="_p data-v-5f3072b9">出售总价：${{currGood.price * sellNum}}</view>
+          <van-button customStyle="background:#805c4f;color:#fff;border-color:#6b4c41;border-radius:3px;height:30px;width:100%" bindtap="handleProxy" data-eventid="{{'23'}}" data-comkey="{{$k}}" class="_van-button data-v-5f3072b9">出售</van-button>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{modalFood}}" closeable close-icon="close" close-icon-position="top-right" bindclose="handleProxy" z-index="100000" customStyle="background:transparent;" data-eventid="{{'26'}}" data-comkey="{{$k}}" class="_van-popup data-v-5f3072b9">
+      <view class="_div data-v-5f3072b9 modal-box">
+        <view class="_div data-v-5f3072b9 food-img">
+          <image src="{{currFood.url}}" class="_img data-v-5f3072b9"></image>
+        </view>
+        <view class="_div data-v-5f3072b9 food-t">
+          <view class="_p data-v-5f3072b9">物品名称：{{currFood.name}}</view>
+          <view class="_p data-v-5f3072b9">拥有数量：{{currFood.num}}</view>
+          <view class="_p data-v-5f3072b9">过程时长：{{SecondToDate}}</view>
+          <view class="_p data-v-5f3072b9">获得经验：{{currFood.exp}}</view>
+          <view class="_div data-v-5f3072b9 food-t-btn">
+            <van-button customStyle="background:#805c4f;color:#fff;border-color:#6b4c41;border-radius:3px;height:30px;width:100%" bindtap="handleProxy" data-eventid="{{'25'}}" data-comkey="{{$k}}" class="_van-button data-v-5f3072b9">使用</van-button>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{modalUnlock}}" closeable close-icon="close" close-icon-position="top-right" bindclose="handleProxy" z-index="100000" customStyle="background:transparent;width:90%" data-eventid="{{'29'}}" data-comkey="{{$k}}" class="_van-popup data-v-5f3072b9">
+      <view class="_div data-v-5f3072b9 shopping-box">
+        <view class="_p data-v-5f3072b9">确定解锁吗？</view>
+        <view class="_p data-v-5f3072b9">解锁需要：${{currFood.unlockPrice}}</view>
+        <view class="_div data-v-5f3072b9 lockBtn" style="margin-top:10px;border-top:1px solid #ceaf92;text-align:right;background:#e8dedb;padding-top:10px;padding-bottom:10px;">
+          <van-button customStyle="background:transparent;border-color:transparent" bindtap="handleProxy" data-eventid="{{'27'}}" data-comkey="{{$k}}" class="_van-button data-v-5f3072b9">取消</van-button>
+          <van-button customStyle="margin-right:10px;border-radius:3px;background-color:#805c4f;border-color:#6b4c41;height:30px;color:#fff" bindtap="handleProxy" data-eventid="{{'28'}}" data-comkey="{{$k}}" class="_van-button data-v-5f3072b9">确定</van-button>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{modalShop}}" closeable close-icon="close" close-icon-position="top-right" bindclose="handleProxy" z-index="100000" customStyle="background:transparent;width:90%" data-eventid="{{'34'}}" data-comkey="{{$k}}" class="_van-popup data-v-5f3072b9">
+      <view class="_div data-v-5f3072b9 shopping-box">
+        <view class="_p data-v-5f3072b9">{{currFood.name}}</view>
+        <view class="_p data-v-5f3072b9">单价：${{currFood.price}}/个</view>
+        <view class="_div data-v-5f3072b9 num-form">
+          <view class="_div data-v-5f3072b9 shop-btn" bindtap="handleProxy" data-eventid="{{'30'}}" data-comkey="{{$k}}"><label class="_span data-v-5f3072b9">-</label></view>
+          <view class="_div data-v-5f3072b9 shop-input">
+            <view class="_b data-v-5f3072b9">{{shoppingNum}}</view>
+          </view>
+          <view class="_div data-v-5f3072b9 shop-btn" bindtap="handleProxy" data-eventid="{{'31'}}" data-comkey="{{$k}}">
+            <van-icon name="add" class="_van-icon data-v-5f3072b9"></van-icon>
+          </view>
+        </view>
+        <view class="_p data-v-5f3072b9">总价：${{currFood.price * shoppingNum}}</view>
+        <view class="_div data-v-5f3072b9 lockBtn" style="margin-top:10px;border-top:1px solid #ceaf92;text-align:right;background:#e8dedb;padding-top:10px;padding-bottom:10px;">
+          <van-button customStyle="background:transparent;border-color:transparent" bindtap="handleProxy" data-eventid="{{'32'}}" data-comkey="{{$k}}" class="_van-button data-v-5f3072b9">取消</van-button>
+          <van-button customStyle="margin-right:10px;border-radius:3px;background-color:#805c4f;border-color:#6b4c41;height:30px;color:#fff" bindtap="handleProxy" data-eventid="{{'33'}}" data-comkey="{{$k}}" class="_van-button data-v-5f3072b9">确定</van-button>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{modalAchievement}}" closeable close-icon="close" close-icon-position="top-right" bindclose="handleProxy" z-index="100000" customStyle="background:transparent;width:90%" data-eventid="{{'36'}}" data-comkey="{{$k}}" class="_van-popup data-v-5f3072b9">
+      <view class="_div data-v-5f3072b9 achievementBox">
+        <view style="margin-bottom: 10px;text-align:center" class="_p data-v-5f3072b9"> 勋章成就 </view>
+        <view class="_ul data-v-5f3072b9 aList">
+          <view wx:key="index" key="{{index}}" wx:for="{{achievement}}" wx:for-index="index" wx:for-item="item" class="_li data-v-5f3072b9 {{[item.complete ? 'active' : '', item.completeID == 1 ? 'onin' : '']}}">
+            <view class="_div data-v-5f3072b9 aInfo">
+              <view class="_p data-v-5f3072b9">
+                {{item.title}}
+                <label class="_span data-v-5f3072b9 fr">{{item.completeCurrCount}}/{{item.completeNeedCount}}</label>
+              </view>
+              <view class="_div data-v-5f3072b9">
+                {{item.desc}}
+                <view class="_div data-v-5f3072b9 reward" wx:if="{{item.completeID == 0}}">
+                  <view class="_div data-v-5f3072b9 reward-icon">
+                    <van-icon name="gold-coin-o" class="_van-icon data-v-5f3072b9"></van-icon>
+                  </view> <label class="_span data-v-5f3072b9 reward-profit">{{item.profit}}</label>
+                </view>
+              </view>
+            </view>
+            <view class="_div data-v-5f3072b9 aRight" bindtap="handleProxy" wx:if="{{item.complete && item.completeID == 0}}" data-eventid="{{'35_'+index}}" data-comkey="{{$k}}">
+              <van-button type="primary" customStyle="height:30px;background-color:#805c4f;border-color:#6b4c41;color:#fff" class="_van-button data-v-5f3072b9">领取奖励</van-button>
+            </view>
+            <view class="_div data-v-5f3072b9 aRight" wx:if="{{item.completeID == 1}}">
+              <van-button type="primary" customStyle="height:30px;background-color:#6d6d6d;border-color:#696969;color:#fff" class="_van-button data-v-5f3072b9">已完成</van-button>
+            </view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{modalHelp}}" closeable close-icon="close" close-icon-position="top-right" bindclose="handleProxy" z-index="100000" customStyle="background:transparent;width:90%" data-eventid="{{'37'}}" data-comkey="{{$k}}" class="_van-popup data-v-5f3072b9">
+      <view class="_div data-v-5f3072b9 achievementBox">
+        <view style="margin-bottom: 10px; padding:10px" class="_p data-v-5f3072b9"> 【游戏介绍】 <view class="_br data-v-5f3072b9"></view>蒜瓣闯关是针对中小学的刷题学习平台；游戏设计多种模式，首先可以通过闯关直接获取金币奖励， 闯关完成后还会随机奖励各种道具，通过道具可以加快小蒜苗的生长，来提升等级。小蒜苗可以收获大蒜， 大蒜同样可以兑换成金币，金币还可以购买各种道具，商城开放收可以在商城购买学习用品。 <view class="_br data-v-5f3072b9"></view>
+          <view class="_br data-v-5f3072b9"></view>【游戏操作】 <view class="_br data-v-5f3072b9"></view>首先点击人物头像，来设置年级学习，然后点击闯关，开始选择科目闯关，首先会从简单的开始，在未通关前不可以进行下一关，每关10道题目，全部答对才能通关，通关后会奖励宝箱，点击宝箱会随机掉落道具；关卡越难，奖励越丰厚；
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{modalUser}}" closeable close-icon="close" close-icon-position="top-right" bindclose="handleProxy" z-index="100000" customStyle="background:transparent;width:90%" data-eventid="{{'42'}}" data-comkey="{{$k}}" class="_van-popup data-v-5f3072b9">
+      <view class="_div data-v-5f3072b9 userout">
+        <view class="_div data-v-5f3072b9 user-form" wx:if="{{!editUserName}}">
+          <view class="_div data-v-5f3072b9 user-grade"><label class="_span data-v-5f3072b9 click_grade" bindtap="handleProxy" data-eventid="{{'38'}}" data-comkey="{{$k}}">
+              <image src="/assets/images/grade_btn.png" alt style="width:93px;height:39px" class="_img data-v-5f3072b9"></image>
+            </label></view>
+          <view class="_div data-v-5f3072b9 head-portrait"><label class="_span data-v-5f3072b9 portrait-item portrait0">
+              <image src="/assets/images/portrait0.jpg" alt style="width:80px;height:81px" class="_img data-v-5f3072b9"></image>
+            </label></view>
+          <view class="_div data-v-5f3072b9 user-name">
+            {{user.name}}
+            <van-icon name="edit" bindtap="handleProxy" data-eventid="{{'39'}}" data-comkey="{{$k}}" class="_van-icon data-v-5f3072b9"></van-icon>
+          </view>
+          <view class="_div data-v-5f3072b9 user-zl">
+            <van-row class="_van-row data-v-5f3072b9">
+              <van-col span="12" class="_van-col data-v-5f3072b9">
+                <view class="_div data-v-5f3072b9 uz-i">
+                  <van-icon name="gem" color="#8bca43" class="_van-icon data-v-5f3072b9"></van-icon>
+                </view>
+                <view class="_div data-v-5f3072b9 uz-i">等级：{{chick.level}}</view>
+              </van-col>
+              <van-col span="12" class="_van-col data-v-5f3072b9">
+                <view class="_div data-v-5f3072b9 uz-i">
+                  <van-icon name="like" color="#F44336" class="_van-icon data-v-5f3072b9"></van-icon>
+                  <view class="_div data-v-5f3072b9 uz-i">粉丝：0</view>
+                </view>
+              </van-col>
+            </van-row>
+            <van-row class="_van-row data-v-5f3072b9">
+              <van-col span="12" class="_van-col data-v-5f3072b9">
+                <view class="_div data-v-5f3072b9 uz-i">
+                  <van-icon name="card" color="#40aaff" class="_van-icon data-v-5f3072b9"></van-icon>
+                </view>
+                <view class="_div data-v-5f3072b9 uz-i">积分：0</view>
+              </van-col>
+              <van-col span="12" class="_van-col data-v-5f3072b9">
+                <view class="_div data-v-5f3072b9 uz-i">
+                  <van-icon name="medal" color="#FF9800" class="_van-icon data-v-5f3072b9"></van-icon>
+                </view>
+                <view class="_div data-v-5f3072b9 uz-i">段位：0</view>
+              </van-col>
+            </van-row>
+          </view>
+        </view>
+        <view class="_div data-v-5f3072b9 user-form" wx:if="{{editUserName}}">
+          <view class="_div data-v-5f3072b9 useredit">
+            <form model="{{user}}" class="_form data-v-5f3072b9">
+              <view class="_p data-v-5f3072b9 pl-title">修改用户名需要1000金币</view> <input type="text" value="{{newUserName}}" bindinput="handleProxy" placeholder="设置用户名称..." style="background-color:#fff;margin-top:20px;margin-bottom:20px;padding-top:5px;padding-bottom:5px" data-eventid="{{'40'}}" data-comkey="{{$k}}" class="_input data-v-5f3072b9" />
+              <van-button type="default" size="small" custom-style="background-color:#805c4f;border-color:#6b4c41;color:#fff" bindtap="handleProxy" data-eventid="{{'41'}}" data-comkey="{{$k}}" class="_van-button data-v-5f3072b9">保存</van-button>
+            </form>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{modalGrade}}" z-index="10000000" customStyle="background:transparent;width:90%" class="_van-popup data-v-5f3072b9">
+      <view class="_div data-v-5f3072b9 gradeOut">
+        <view style="text-align:center;margin-bottom:20px" class="_p data-v-5f3072b9">年级|学期</view> <template value="{{modalGrade}}" bindchange="handleProxy" data-eventid="{{'43'}}" data-comkey="{{$k}}" data="{{...$root[$kk+'67'], $root}}" is="2d95ab52"></template>
+      </view>
+    </van-popup>
+    <van-popup show="{{modalLogin}}" z-index="10000000" customStyle="background:transparent;width:90%" class="_van-popup data-v-5f3072b9">
+      <view class="_div data-v-5f3072b9 loginout"><template value="{{modalLogin}}" bindchange="handleProxy" bindgetVisitor="handleProxy" data-eventid="{{'44'}}" data-comkey="{{$k}}" data="{{...$root[$kk+'69'], $root}}" is="2be77860"></template></view>
+    </van-popup>
+    <van-notify id="van-notify" class="_van-notify data-v-5f3072b9"></van-notify>
+  </view>
+</template>

@@ -1,0 +1,9 @@
+<template name="44b686ac">
+  <view class="_div data-v-8601fffe eggWrapper" title="大蒜" ref="eggexp"><label class="_span data-v-8601fffe"></label> <label class="_span data-v-8601fffe"></label> <label class="_span data-v-8601fffe"></label> <label class="_span data-v-8601fffe"></label>
+    <view class="_div data-v-8601fffe egg" bindtap="handleProxy" data-eventid="{{'0'}}" data-comkey="{{$k}}">
+      <view class="_div data-v-8601fffe grass" ref="grass">
+        <view class="_div data-v-8601fffe suanmiao" wx:key="index" key="{{index}}" wx:for="{{domData}}" wx:for-index="index" wx:for-item="item" style=" {{(  'height:' +  item.height +  ';' +  'left:' +  item.left +  ';' +  'opacity:' +  item.opacity +  ';' +  'transform:' +  item.transform +  ';' +  'z-index:' +  item.zIndex +  ';')}}"></view>
+      </view>
+    </view>
+  </view>
+</template>

@@ -1,0 +1,39 @@
+<template name="597f3ec6">
+  <view class="_div data-v-0379b4a6 open-body">
+    <view class="_div data-v-0379b4a6 wrapper">
+      <view class="_div data-v-0379b4a6 bg rotate">
+        <image src="/assets/images/light.png" alt class="_img data-v-0379b4a6"></image>
+      </view>
+      <view class="_div data-v-0379b4a6 open-has {{[isclick ? 'opened' : '']}}" ref="open_has">
+        <view class="_h3 data-v-0379b4a6 title-close"><label class="_span data-v-0379b4a6 user">闯关成功</label>您获得了一个宝箱 </view>
+        <view class="_h3 data-v-0379b4a6 title-open"> 恭喜你， <view class="_br data-v-0379b4a6"></view>成功领取 <label class="_span data-v-0379b4a6 user">奖励</label></view>
+        <view class="_div data-v-0379b4a6 mod-chest">
+          <view class="_div data-v-0379b4a6 chest-close show {{[isclick ? 'shake' : '']}}" bindtap="handleProxy" data-eventid="{{'0'}}" data-comkey="{{$k}}">
+            <view class="_div data-v-0379b4a6 gift">
+              <image hidden="{{!(showimg)}}" src="/assets/images/chest.png" alt style="width:134px;height:94px" class="_img data-v-0379b4a6"></image>
+              <image hidden="{{!(!showimg)}}" src="/assets/images/chest2.png" alt style="width:134px;height:94px" class="_img data-v-0379b4a6"></image>
+            </view>
+            <view class="_div data-v-0379b4a6 tips">
+              <view class="_i data-v-0379b4a6 arrow">
+                <image src="/assets/images/txt-tips-open.png" alt style="width:240px;height:80px" class="_img data-v-0379b4a6"></image>
+              </view>
+            </view>
+          </view>
+          <view class="_div data-v-0379b4a6 chest-open {{[isclick ? 'show' : '']}}" ref="chest_open">
+            <view class="_div data-v-0379b4a6 mod-chest-cont open-cont">
+              <view class="_div data-v-0379b4a6 content1">
+                <view class="_div data-v-0379b4a6 icon">
+                  <image src="{{reward.url}}" style="width:70px;height:40px" class="_img data-v-0379b4a6"></image>
+                </view>
+                <view class="_div data-v-0379b4a6 gift">
+                  {{reward.name}}
+                </view>
+              </view>
+            </view>
+            <van-button wx:if="{{!isNextProject}}" type="primary" custom-style="margin-top:130px" bindtap="handleProxy" data-eventid="{{'1'}}" data-comkey="{{$k}}" class="_van-button data-v-0379b4a6">继续闯关</van-button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
